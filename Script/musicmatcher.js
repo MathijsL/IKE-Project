@@ -29,12 +29,23 @@ function FillResults(data){
 				top: '0',
 				marginTop: '0',
 		    }, 300, function() {
-				//Set result area
-				$('.slider').slider({ orientation: 'vertical' });
 				$('.searchbox').css("position", "fixed");
 				$('.container').css("background-color", "#323232");
-				$('.resultbox, .slider').css("height", ($(window).height() - 130));
+				$('.resultbox, .sliderbox').css("height", ($(window).height() - 130));
+				$('.slider').css("height", ($(window).height() - 158));
 				$('.resultbox').css("overflow-y", "scroll").html(data);
+			
+			
+				//Set result area
+				$('.slider').slider({ orientation: 'vertical', max: '1000', min: '0', value: '1000'});
+				$(".slider").bind("slide change stop slidestop", function (event, ui) {
+					var maxheight = $(".resultbox").height();
+					var height = $(".serviceresult").height();
+					if (height > maxheight) {
+						$(".resultbox").scrollTop((height-maxheight)-(($(".slider").slider("option", "value") / 1000) * (height - maxheight)));
+					}
+				});
+				
 				//TODO remove timeout
 				setTimeout("$('.resultbox').hide();HideLoading();$('.resultbox').fadeIn(300);", 1000);
 		});

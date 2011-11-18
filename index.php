@@ -19,6 +19,7 @@
 		<!-- RESULTS -->
 	</div>
 	<div class="slider borders"></div>
+	<div class="sliderbox borders"></div>
 	<div class="lightbox"></div>
 	<div class="lightboxcontent borders">Loading...</div>
 </div>

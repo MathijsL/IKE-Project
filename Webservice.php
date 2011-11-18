@@ -24,5 +24,5 @@
 	}
 	
 	//Return result
-	echo $rdb;
+	echo "<div class='serviceresult'>" . $rdb . "<div class='fclear'></div></div>";
 ?>
