@@ -110,10 +110,11 @@ h1,h2,h3{
 }
 .slider{
 	position:absolute;
-	top: 110px;
+	top: 100px;
 	right: 20px;
-	width: 15px;
-	background-color: #606060;
+	width: 18px;
+	background-color: #292929;
+	padding: 10px 0 10px 0;
 }
 
 /** LIGHTBOX **/
