@@ -46,6 +46,8 @@ function FillResults(data){
 					}
 				});
 				
+				//$('.resultbox').scroll(
+				
 				//TODO remove timeout
 				setTimeout("$('.resultbox').hide();HideLoading();$('.resultbox').fadeIn(300);", 1000);
 		});
