@@ -1,0 +1,152 @@
+/** CUSTOM FONT **/
+@font-face {
+	font-family: bauhaus;
+	src: url('bh.ttf');
+}
+
+/** GLOBAL **/
+html, body {
+	background-color: #1f1f1f;
+	width:100%;
+	height:100%;
+	margin:0;
+	padding:0;
+	font-family: Arial;
+	color:white;
+}
+h1,h2,h3{
+	color:white;
+}
+
+/** CONTAINER **/
+.container{
+	position:absolute;
+	left: 50%;
+	width: 820px;
+	height: 100%;
+	margin: 0 auto 0 -410px;
+}
+
+/** SEARCHBOX **/
+.searchbox{
+	font-family: bauhaus;
+	position:fixed;
+	font-size:30pt;
+	top: 50%;
+	left: 50%;
+	height: 50px;
+	width: 800px;
+	margin: -70px auto 0 -420px;
+	padding:20px;
+	background-color:#2f2f2f;
+	background-image: linear-gradient(bottom, rgb(66,66,66) 24%, rgb(47,47,47) 69%);
+	background-image: -o-linear-gradient(bottom, rgb(66,66,66) 24%, rgb(47,47,47) 69%);
+	background-image: -moz-linear-gradient(bottom, rgb(66,66,66) 24%, rgb(47,47,47) 69%);
+	background-image: -webkit-linear-gradient(bottom, rgb(66,66,66) 24%, rgb(47,47,47) 69%);
+	background-image: -ms-linear-gradient(bottom, rgb(66,66,66) 24%, rgb(47,47,47) 69%);
+	text-align:center;
+	z-index:900;
+}
+
+/** SEARCHBUTTON **/
+#searchbutton{
+	background: orange;
+	border: none;
+	width: 121px;
+	height: 30px;
+	font-weight:bold;
+	font-size:14pt;
+	color: #fff;
+	margin-top: 8px;
+}
+
+/** SEARCHINPUT **/
+#inputkeywords{
+	height: 30px;
+	border: 0px;
+	width:360px;
+	font-weight:bold;
+	color: #000;
+	text-indent: 10px;
+}
+.container .searchbox .header{
+	text-align:center;
+}
+
+/** SEARCHBOX COLUMNS **/
+.container .columns-3-1{
+	float: left;
+	margin-left: 20px;
+}
+.container .columns-3-2{
+	float: left;
+	margin-top: 12px;
+	margin-left: 35px;
+}	
+.container .columns-3-3{
+	float:left;
+	margin-top: 4px;
+	 margin-left:10px;
+}
+
+/** RESULTBOX **/
+.resultbox{
+	margin-top:110px;
+	width: 760px;
+	padding: 0 20px 0 20px;
+	display:none;
+}
+.resultbox li{
+	padding:6px 0 0 0; 
+	margin:0;
+	list-style-type: none;
+	border-bottom: 1px solid #606060;
+}
+.resultbox ul, .resultbox li{
+	padding-left:10px; 
+	margin:0;
+	list-style-type: none;
+	height: 30px;
+}
+
+/** LIGHTBOX **/
+.lightbox{
+	display:none;
+	border:none;
+	width:100%;
+	height:100%;
+	background-color: #000;
+	opacity: 0.7;
+	position:fixed;
+	top:0px;
+	left:0px;
+	z-index:999;
+}
+.lightboxcontent{
+	border:none;
+	display:none;
+	width: 70px;
+	height: 20px;
+	background-color: #404040;
+	padding: 20px;
+	position:fixed;
+	left: 50%;
+	top: 50%;
+	margin-top: -30px;
+	margin-left: -55px;
+	z-index:999;
+}
+
+/** COMMON **/
+.orange{
+	color: orange;
+}
+.gray{
+	color: #fff;
+	margin-left:2px;
+}
+.borders{
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
