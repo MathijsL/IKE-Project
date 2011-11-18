@@ -1,3 +1,4 @@
+<table>
 <?php
 
 	require_once("phpapi/phpBrainz.class.php");
@@ -18,6 +19,7 @@
 		echo '<tr><td>'.$result->getTitle().'</td><td>'.$result->getArtist()->getName().'</td></tr>';
 	}
 	
-}
+
 
 ?>
+</table>
