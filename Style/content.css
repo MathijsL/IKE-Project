@@ -108,6 +108,13 @@ h1,h2,h3{
 	list-style-type: none;
 	height: 30px;
 }
+.slider{
+	position:absolute;
+	top: 110px;
+	right: 20px;
+	width: 15px;
+	background-color: #606060;
+}
 
 /** LIGHTBOX **/
 .lightbox{

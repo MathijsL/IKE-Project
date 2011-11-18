@@ -30,9 +30,11 @@ function FillResults(data){
 				marginTop: '0',
 		    }, 300, function() {
 				//Set result area
+				$('.slider').slider({ orientation: 'vertical' });
 				$('.searchbox').css("position", "fixed");
 				$('.container').css("background-color", "#323232");
-				$('.resultbox').css("height", ($(window).height() - 130)).css("overflow-y", "scroll").html(data);
+				$('.resultbox, .slider').css("height", ($(window).height() - 130));
+				$('.resultbox').css("overflow-y", "scroll").html(data);
 				//TODO remove timeout
 				setTimeout("$('.resultbox').hide();HideLoading();$('.resultbox').fadeIn(300);", 1000);
 		});
