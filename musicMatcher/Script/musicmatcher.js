@@ -13,7 +13,7 @@ function GetResults(){
 	
 	//Process search request
 	$.ajax({
-		url: 'Webservice.php',
+		url: '/musicMatcher/source/musicMatcher.php',
 		data: "keyword=" + keyword,
 		success: function(data) {
 			FillResults(data);
@@ -46,7 +46,9 @@ function FillResults(data){
 					}
 				});
 				
-				//$('.resultbox').scroll(
+				$('.resultbox').scroll(function(){
+				
+				});
 				
 				//TODO remove timeout
 				setTimeout("$('.resultbox').hide();HideLoading();$('.resultbox').fadeIn(300);", 1000);
