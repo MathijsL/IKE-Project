@@ -9,7 +9,7 @@
 	$keyword = $_GET['keyword'];
 	$args = array(
 		"artist"=>$keyword,
-		"title"=>$keyword
+		"limit"=>2000
 	);
 	
 	$releaseFilter = new phpBrainz_ReleaseFilter($args);

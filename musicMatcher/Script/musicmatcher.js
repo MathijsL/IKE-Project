@@ -1,8 +1,13 @@
 $(document).ready(function(){
 	//Set submitbutton onclick
 	$("#searchbutton").click(function() {
+		//Show loading start fetching results
 		ShowLoading();
 		GetResults();
+		
+		//If first search then animate
+		if($('.searchbox').css("top").replace("px", "") > 0)
+			$('.searchbox,').animate({ top: '0', marginTop: '0',}, 300, function(){ $('.container').css("background-color", "#323232"); });
 	});
 });
 
@@ -13,7 +18,7 @@ function GetResults(){
 	
 	//Process search request
 	$.ajax({
-		url: '/musicMatcher/source/musicMatcher.php',
+		url: '/Data/last.FM/Webservice.php', //current webservice
 		data: "keyword=" + keyword,
 		success: function(data) {
 			FillResults(data);
@@ -23,44 +28,26 @@ function GetResults(){
 
 //Function used to fill result
 function FillResults(data){
-	if($('.searchbox').css("top").replace("px", "") > 0){
-		//Move searchbar to top
-		$('.searchbox,').animate({
-				top: '0',
-				marginTop: '0',
-		    }, 300, function() {
-				$('.searchbox').css("position", "fixed");
-				$('.container').css("background-color", "#323232");
-				$('.resultbox, .sliderbox').css("height", ($(window).height() - 130));
-				$('.slider').css("height", ($(window).height() - 158));
-				$('.resultbox').css("overflow-y", "scroll").html(data);
+	$('.resultbox, .sliderbox').css("height", ($(window).height() - 130));
+	$('.slider').css("height", ($(window).height() - 158));
+	$('.resultbox').css("overflow-y", "scroll").html(data);
 			
-			
-				//Set result area
-				$('.slider').slider({ orientation: 'vertical', max: '1000', min: '0', value: '1000'});
-				$(".slider").bind("slide change stop slidestop", function (event, ui) {
-					var maxheight = $(".resultbox").height();
-					var height = $(".serviceresult").height();
-					if (height > maxheight) {
-						$(".resultbox").scrollTop((height-maxheight)-(($(".slider").slider("option", "value") / 1000) * (height - maxheight)));
-					}
-				});
+	//Set scrollbar
+	$('.slider').slider({ orientation: 'vertical', max: '1000', min: '0', value: '1000'});
+	$(".slider").bind("slide change stop slidestop", function (event, ui) {
+		var maxheight = $(".resultbox").height();
+		var height = $(".serviceresult").height();
+		if (height > maxheight) {
+			$(".resultbox").scrollTop((height-maxheight)-(($(".slider").slider("option", "value") / 1000) * (height - maxheight)));
+		}
+	});		
+	$('.resultbox').scroll(function(){	
+		$( ".slider" ).slider( "option", "value", (1000-(($(".resultbox").scrollTop()/($(".serviceresult").height() - $(".resultbox").height()))*1000)));
+	});
 				
-				$('.resultbox').scroll(function(){
-				
-				});
-				
-				//TODO remove timeout
-				setTimeout("$('.resultbox').hide();HideLoading();$('.resultbox').fadeIn(300);", 1000);
-		});
-	}
-	else{
-		//Set result data
-		$('.resultbox').hide();
-		$('.resultbox').html(data);
-		//TODO remove timeout
-		setTimeout("HideLoading();$('.resultbox').fadeIn(300);", 1000);
-	}	
+	$('.resultbox').hide();
+	HideLoading();
+	$('.resultbox').fadeIn(300);
 }
 
 //Function that shows the loading box
