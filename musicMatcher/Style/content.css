@@ -115,6 +115,7 @@ h1,h2,h3{
 	width: 18px;
 	background-color: #292929;
 	padding: 10px 0 10px 0;
+	display:none;
 }
 
 .slider{
@@ -122,7 +123,7 @@ h1,h2,h3{
 	top: 138px;
 	right: 20px;
 	width: 18px;
-
+	display:none;
 }
 
 /** LIGHTBOX **/
@@ -152,6 +153,30 @@ h1,h2,h3{
 	margin-left: -55px;
 	z-index:999;
 }
+.artistinfo{
+	border:none;
+	display:none;
+	min-width:360px;
+	width:auto;
+	height:auto;
+	min-height:160px;
+	margin: -100px 0 0 -200px;
+	position:absolute;
+	top:50%;
+	left:50%;
+	z-index:999;
+	background-color: #404040;
+	padding:20px;
+}
+.artistinfo ul{
+	margin:10px 0 0 0;
+	padding:0px;
+}
+.artistinfo li{
+	margin:0px;
+	padding:0px;
+	list-style-type:none;
+}
 
 /** COMMON **/
 .orange{
@@ -168,4 +193,36 @@ h1,h2,h3{
 }
 .fclear{
 	clear:both;
+}
+
+/** JQUERY UI **/
+.ui-autocomplete{
+	width: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: auto;
+	max-height:200px;
+	background-color:white;
+	padding:0px;
+	margin:0px;
+	font-size:10pt;
+}
+
+.ui-autocomplete li{
+	font-size:12pt;
+	font-weight:bold;
+	list-style-type: none;
+	background-color:white;
+	color:black;
+	width:300px;
+	margin:0px;
+	padding:0px;
+}
+.ui-autocomplete li a{
+	width:100%;
+	display:block;
+}
+.ui-menu .ui-menu-item a.ui-state-hover,
+.ui-menu .ui-menu-item a.ui-state-active{
+	background-color:#AAAAAA;
 }

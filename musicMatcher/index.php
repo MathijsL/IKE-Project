@@ -22,6 +22,7 @@
 	<div class="sliderbox borders"></div>
 	<div class="lightbox"></div>
 	<div class="lightboxcontent borders">Loading...</div>
+	<div class="artistinfo borders"></div>
 </div>
 </body>
 </html>
