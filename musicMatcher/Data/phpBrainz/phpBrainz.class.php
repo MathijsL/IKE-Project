@@ -204,6 +204,25 @@ class phpBrainz{
 	}
 
 	/**
+	 * Retrieves a artist given the musicbrainz id
+	 * and an array of items to retrieve.
+	 *
+	 * @param string $mbid
+	 * @param array $trackIncludes
+	 * @return phpBrainz_Artist
+	 */
+	public function getArtist($mbid){
+	   $url = ARTIST_URL.$mbid."?type=xml&inc=";
+           
+	   $xml = simplexml_load_file($url);
+	   if($xml === false){
+	   	throw new Exception("Unable to load XML file. URL: ".$url);
+	   }
+	   $artist = $this->parseArtistXML($xml->artist);
+	   return $artist;
+	}
+	
+	/**
 	 * Retrieves a release given the musicbrainz id
 	 * and an array of items to retrieve.
 	 *

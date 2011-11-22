@@ -101,6 +101,14 @@ class phpBrainz_Artist{
     public function setReleasesCount($count){
         $this->releasesCount = $count;
     }
+	
+	public function setReleasesOffset($count) {
+		$this->releasesOffset = $count;
+	}
+	
+	public function getReleasesOffset() {
+		return $this->releasesOffset;
+	}
     
     public function equals(phpBrainz_Artist $compareObj){
         if(
