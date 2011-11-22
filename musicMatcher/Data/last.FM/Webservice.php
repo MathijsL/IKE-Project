@@ -28,7 +28,7 @@
 	function getTagByArtist($artist){
 		//Get artist information
 		$xmlReader = new XMLReader();
-		$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . ($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026', null, LIBXML_NOBLANKS);
+		$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026', null, LIBXML_NOBLANKS);
 
 		//Read until the first tag is found then break
 		$tag = "";
@@ -60,9 +60,11 @@
 		
 		//Find the artists with the same tag as the input artist and add to result
 		for($i = 0; $i < sizeof($topartists); $i++){
-			$topartisttag = getTagByArtist($topartists[$i]);
-			if($topartisttag == $artisttag && $topartists[$i] != ""){
-				$result .= "<li onclick='ShowArtist(\"" . $topartists[$i] . "\")'>" . $topartists[$i] . "</li>";
+			if($topartists[$i] != ""){
+				$topartisttag = getTagByArtist($topartists[$i]);
+				if($topartisttag == $artisttag && $topartists[$i] != ""){
+					$result .= "<li onclick='ShowArtist(\"" . $topartists[$i] . "\")'>" . $topartists[$i] . "</li>";
+				}
 			}
 		}
 		

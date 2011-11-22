@@ -1,10 +1,10 @@
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="/Style/content.css" />
-<link rel="stylesheet" type="text/css" href="/Style/jquery-ui-1.8.16.custom.css" />
-<script type="text/javascript" src="/Script/jquery-1.7.min.js"></script>
-<script type="text/javascript" src="/Script/jquery-ui-1.8.16.custom.min.js"></script>
-<script type="text/javascript" src="/Script/musicmatcher.js"></script>
+<link rel="stylesheet" type="text/css" href="Style/content.css" />
+<link rel="stylesheet" type="text/css" href="Style/jquery-ui-1.8.16.custom.css" />
+<script type="text/javascript" src="Script/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="Script/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="Script/musicmatcher.js"></script>
 </head>
 <body>
 <div class="container">

@@ -35,7 +35,7 @@ function GetResults(){
 	
 	//Process search request
 	$.ajax({
-		url: '/Data/last.FM/Webservice.php', //current webservice
+		url: '../Data/last.FM/Webservice.php', //current webservice
 		data: "keyword=" + keyword + "&req=getRelatedArtist",
 		success: function(data) {
 			FillResults(data);
@@ -46,7 +46,7 @@ function GetResults(){
 //Function used to get autocomplete array
 function GetAutoComplete(){
 	$.ajax({
-		url: '/Data/last.FM/Webservice.php', //current webservice
+		url: '../Data/last.FM/Webservice.php', //current webservice
 		data: "keyword=" + "&req=getTopArtist",
 		success: function(data) {
 			FillAutoComplete(data);
@@ -108,7 +108,7 @@ function HideLoading(){
 //Function that shows the artist info
 function ShowArtist(artist){
 	$.ajax({
-		url: '/Data/last.FM/Webservice.php', //current webservice
+		url: '../Data/last.FM/Webservice.php', //current webservice
 		data: "keyword=" + artist + "&req=getArtistInfo",
 		success: function(data) {
 			FillArtistData(data);
