@@ -2,18 +2,29 @@
 	$page = "home";
 	$text = "";
 	$side = array();
+	$subpage = "";
 	
 	if(isset($_REQUEST["page"])){
 		$page = $_REQUEST["page"];
 	}
-	
+	if(isset($_REQUEST["subpage"])){
+		$subpage = $_REQUEST["subpage"];
+	}
 	if($page == "documentation"){
-		$text = "<h1>Sample Text</h1><p>hello world!</p>";
-		$side = array("ding 1", "ding 2", "ding 3");
+		$side = array("iteratie 1", "iteratie 2", "iteratie 3");
+		$text = "<p> test </p>";
 	}
 	if($page == "files"){
 		$side = array("files1", "files2");
 		$text = "<ul>".files()."</ul>";
+	}
+	
+	
+	
+	if($subpage == "iteratie1"){
+		$file = "./text.html";
+		$content = file($file);
+		$text=implode($content);
 	}
 	
 	function files(){

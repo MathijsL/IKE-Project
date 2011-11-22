@@ -21,7 +21,7 @@
         <ul>
         	<?php include("content.php"); 
 			foreach($side as &$item){
-				echo '<li><a href=?subpage='.$item.'>'.$item.'</a></li>';
+				echo '<li><a href=?page='.$page.'&subpage='.str_replace(" ", "", $item).'>'.$item.'</a></li>';
 			}?>
         </ul>
     </div>
