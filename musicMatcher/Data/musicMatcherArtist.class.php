@@ -1,17 +1,20 @@
 <?php
+	require_once("phpBrainz/phpBrainz.class.php");
+	require_once("phpBrainz/phpBrainz.artist.class.php");
+	
 	
 	class musicMatcherArtist{
-		private $mbid;
-		private $name;
-		private $beginDate;
-		private $endDate;
-		private $type;
-		private $albums;
-		private $picture;
-		private $releasesCount;
-		private $releasesOffset;
+		public $mbid;
+		public $name;
+		public $beginDate;
+		public $endDate;
+		public $type;
+		public $albums = array();
+		public $picture;
+		public $releasesCount;
+		public $releasesOffset;
 		
-		function __construct($artist) {
+		public function __construct($artist) {
 			//Get artist information
 			$xmlReader = new XMLReader();
 			$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026', null, LIBXML_NOBLANKS);
@@ -58,16 +61,14 @@
 			}		
 			//Close reader and return found tag
 			$xmlReader->close();
-			}
+			
 			
 			//MusicBrainz info
-			require_once("phpBrainz/phpBrainz.class.php");
-			require_once("phpBrainz/phpBrainz.artist.class.php");
 			
 			//Create new phpBrainz object
 			$phpBrainz = new phpBrainz();
 			
-			$artistObject = $phpBrainz -> getArtist($mbid);
+			$this->$artistObject = $phpBrainz -> getArtist($mbid);
 			$this->$beginDate = $artistObject -> getBeginDate();
 			$this->$endDate = $artistObject -> getEndDate();
 			$this->$type = $artistObject -> getType();
@@ -76,11 +77,11 @@
 		}
 		
 		public function getMbid() {
-			return this->$mbid;
+			return $this->$mbid;
 		}
 		
 		public function getName() {
-			return $this->$name
+			return $this->$name;
 		}
 		
 		public function getBeginDate() {
