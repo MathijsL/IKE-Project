@@ -1,27 +1,7 @@
 <?php
 	//Get top 50 artist names from list.fm
 	function getTopArtist(){
-		//Get xml list of top 50 artists
-		$xmlReader = new XMLReader();
-		$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=b25b959554ed76058ac220b7b2e0a026&limit=50&page=1', null, LIBXML_NOBLANKS);
-		
-		//Add all artist names to string
-		$artistlist = "";
-		while ($xmlReader->read())
-		{
-			if($xmlReader->name == "name"){
-				$xmlReader->read();
-				if($xmlReader->value != ""){
-					$artistlist .= $xmlReader->value . "|";
-				}
-			}
-		}
-		
-		//Close reader
-		$xmlReader->close();
-		
-		//Create and return array of top 50 artist
-		return $artistlist;
+		return implode("|", simplexml_load_file('http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=b25b959554ed76058ac220b7b2e0a026&limit=50&page=1')->xpath("//artist/name"));
 	}
 	
 	//Returns the first tag submitted by the artist

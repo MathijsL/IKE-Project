@@ -143,7 +143,7 @@ function FillArtistData(data){
 	html += "<img style='margin-top: 0px; width:126px;' src='" + artistdata[1].split("image:")[1] + "'>";
 	html += "</div>";
 	html += "<div style='float:left; margin-left:20px;'>";
-	html += "<b>Info</b><a style='text-align:right; position:absolute; right:25px;' onclick='HideArtist()' href='#'>Close</a>";
+	html += "<b>Info</b><a style='text-align:right; position:absolute; color:white; right:25px;' onclick='HideArtist()' href='#'>Close</a>";
 	html += "<br />";
 	html += "<br />";
 	html += "Age: 20<br />";
