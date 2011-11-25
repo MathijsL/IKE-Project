@@ -43,5 +43,11 @@
 		$lfm = new lastFM();
 		$topArtists = $lfm -> getTopArtist();
 		echo $topArtists;
+	} else if ($function == "getRelatedArtist" && isset($_GET['keyword'])){
+		include_once("lastFM.class.php");
+		
+		$lfm = new lastFM();
+		$getRelatedArtists = $lfm -> getRelatedArtist();
+		echo $getRelatedArtists;
 	}
 ?>
