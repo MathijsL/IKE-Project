@@ -6,41 +6,37 @@
 		
 		$keyword = $_GET['keyword'];
 		$selection = $_GET['selection'];
-		$result;
+		$result = "<artistInfo:";
 		$artist = new musicMatcherArtist($keyword);
 		
 		$features = explode(";",$selection);
 		
 		if(in_array('name',$features)) {
-			$result .= "name:".$artist->getName();
+			$result .= "<name:".$artist->getName().">";
 		}	
 		if(in_array('beginDate',$features)) {
-			$result .= "beginDate:".$artist->getBeginDate();
+			$result .= "<beginDate:".$artist->getBeginDate().">";
 		}
 		if(in_array('endDate',$features)) {
-			$result .= "endDate:".$artist->getEndDate();
+			$result .= "<endDate:".$artist->getEndDate().">";
 		}
 		if(in_array('type',$features)) {
-			$result .= "type:".$artist->getType();
+			$result .= "<type:".$artist->getType().">";
 		}
 		if(in_array('albums',$features)) {
-			$result .= "albums:";
+			$result .= "<albums:";
 			$albums = $artist->getAlbums();
 			foreach($albums as $album) {
-				$result .= $album.";";
+				$result .= $album->toString();
 			}
+			$result .= ">";
 		}
 		if(in_array('picture',$features)) {
-			$result .= "picture:".$artist->getPicture();
-		}
-		if(in_array('releasesCount',$features)) {
-			$result .= "releasesCount:".$artist->getReleasesCount();
-		}
-		if(in_array('releasesOffset',$features)) {
-			$result .= "releasesOffset:".$artist->getReleasesOffset();
+			$result .= "<picture:".$artist->getPicture().">";
 		}
 		
 		echo $result;
+		
 	} else if ($function == "autocomplete") {
 		include_once("lastFM.class.php");
 		
