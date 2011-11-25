@@ -50,7 +50,7 @@ function GetResults(){
 	
 	//Process search request
 	$.ajax({
-		url: '../Data/last.FM/Webservice.php', //current webservice
+		url: 'Data/last.FM/Webservice.php', //current webservice
 		data: "keyword=" + keyword + "&req=getRelatedArtist",
 		success: function(data) {
 			FillResults(data);
@@ -61,7 +61,7 @@ function GetResults(){
 //Function used to get autocomplete array
 function GetAutoComplete(){
 	$.ajax({
-		url: '../Data/last.FM/Webservice.php', //current webservice
+		url: 'Data/last.FM/Webservice.php', //current webservice
 		data: "keyword=" + "&req=getTopArtist",
 		success: function(data) {
 			FillAutoComplete(data);
@@ -118,7 +118,7 @@ function HideLoading(){
 //Function that shows the artist info
 function ShowArtist(artist){
 	$.ajax({
-		url: '../Data/last.FM/Webservice.php', //current webservice
+		url: 'Data/last.FM/Webservice.php', //current webservice
 		data: "keyword=" + artist + "&req=getArtistInfo",
 		success: function(data) {
 			FillArtistData(data);
@@ -186,7 +186,7 @@ function CreateAlbum(data){
 				$.each(songs, function(i2, val2) {
 					if(val2 != ""){
 						var songparts = val2.split("#");
-						albumhtml += "<li><div style='clear:both; width:100%; margin-top: 1px;'><div style='float:left;'>" + songparts[0] + "</div><div style='float:right; text-align:right;'><a target='_blank' href='http://www.youtube.com/watch?v=" + songparts[1] + "'><img style='border-radius: 5px; height:19px;' src='/Script/youtube.png'/></a></div></div></li>";
+						albumhtml += "<li><div style='clear:both; width:100%; margin-top: 1px;'><div style='float:left;'>" + songparts[0] + "</div><div style='float:right; text-align:right;'><a target='_blank' href='http://www.youtube.com/watch?v=" + songparts[1] + "'><img style='border-radius: 5px; height:19px;' src='/musicMatcher/Script/youtube.png'/></a></div></div></li>";
 					}
 				});
 				albumhtml += "</ul></div>"

@@ -1,7 +1,27 @@
 <?php
 	//Get top 50 artist names from list.fm
 	function getTopArtist(){
-		return implode("|", simplexml_load_file('http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=b25b959554ed76058ac220b7b2e0a026&limit=50&page=1')->xpath("//artist/name"));
+		//Get xml list of top 50 artists
+		$xmlReader = new XMLReader();
+		$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=b25b959554ed76058ac220b7b2e0a026&limit=50&page=1', null, LIBXML_NOBLANKS);
+		
+		//Add all artist names to string
+		$artistlist = "";
+		while ($xmlReader->read())
+		{
+			if($xmlReader->name == "name"){
+				$xmlReader->read();
+				if($xmlReader->value != ""){
+					$artistlist .= $xmlReader->value . "|";
+				}
+			}
+		}
+		
+		//Close reader
+		$xmlReader->close();
+		
+		//Create and return array of top 50 artist
+		return $artistlist;
 	}
 	
 	//Returns the first tag submitted by the artist
@@ -35,15 +55,14 @@
 		$artisttag = getTagByArtist($relatedartist);
 		
 		//Get the top 50 artists
-		$array = getTopArtist();
-		$topartists = explode("|", $array);
-		
-		//Find the artists with the same tag as the input artist and add to result
-		for($i = 0; $i < sizeof($topartists); $i++){
-			if($topartists[$i] != "" && $topartists[$i] != $relatedartist){
-				$topartisttag = getTagByArtist($topartists[$i]);
-				if($topartisttag == $artisttag && $topartists[$i] != ""){
-					$result .= "<li onclick='ShowArtist(\"" . $topartists[$i] . "\")'>" . $topartists[$i] . "</li>";
+		$xmlReader = new XMLReader();
+		$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=tag.gettopartists&tag=' . rawurlencode($artisttag) . '&api_key=b25b959554ed76058ac220b7b2e0a026', null, LIBXML_NOBLANKS);
+		while ($xmlReader->read())
+		{
+			if($xmlReader->name == "name"){
+				$xmlReader->read();
+				if($xmlReader->value != ""){
+					$result .= "<li onclick='ShowArtist(\"" . $xmlReader->value . "\")'>" . $xmlReader->value . "</li>";
 				}
 			}
 		}
@@ -52,7 +71,7 @@
 		return $result . "</ul>";
 	}
 	
-	function getArtistInfo($artist){
+	/*function getArtistInfo($artist){
 		//Get artist information
 		$xmlArtistInfo = simplexml_load_file('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026');
 		$result = "";
@@ -79,7 +98,7 @@
 		}
 		
 		return $result;
-	}
+	}*/
 
 	
 	//Find related artists / return top artist
@@ -87,5 +106,5 @@
 		echo "<div class='serviceresult'>" . getRelatedArtist($_GET['keyword']) . "</div>";
 	else if ($_GET['req'] == "getTopArtist")
 		echo getTopArtist();
-	else if ($_GET['req'] == "getArtistInfo")
-		echo getArtistInfo($_GET['keyword']);
+	/*else if ($_GET['req'] == "getArtistInfo")
+		echo getTagByArtist($_GET['keyword']);*/
