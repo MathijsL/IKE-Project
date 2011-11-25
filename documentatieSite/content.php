@@ -11,24 +11,27 @@
 		$subpage = $_REQUEST["subpage"];
 	}
 	if($page == "documentation"){
-		$side = array("iteratie 1", "iteratie 2", "iteratie 3");
+		$side = array("Iteratie 1", "Iteratie 2", "Iteratie 3");
 		$text = "<p> test </p>";
 	}
 	if($page == "files"){
-		$side = array("files1", "files2");
-		$text = "<ul>".files()."</ul>";
+		$side = array("Deliverables", "Code");
 	}
 	
 	
 	
-	if($subpage == "iteratie1"){
+	if($subpage == "Iteratie1"){
 		$file = "./text.html";
 		$content = file($file);
 		$text=implode($content);
 	}
 	
-	function files(){
-		$dir = "./documents";
+	if($subpage == "Deliverables"){
+		$text = "<ul>".files(".\Deliverables")."</ul>";
+	}
+	
+	function files($path){
+		$dir = $path;
 		$files = scandir($dir);
 		$res = "";
 		foreach($files as &$file){
