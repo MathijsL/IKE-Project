@@ -1,6 +1,6 @@
 <?php
 	$page = "home";
-	$text = "";
+	$text = "under construction";
 	$side = array();
 	$subpage = "";
 	
@@ -11,8 +11,7 @@
 		$subpage = $_REQUEST["subpage"];
 	}
 	if($page == "documentation"){
-		$side = array("Iteratie 1", "Iteratie 2", "Iteratie 3");
-		$text = "<p> test </p>";
+		$side = array("Requirements", "Iteratie 1", "Iteratie 2", "Iteratie 3");
 	}
 	if($page == "files"){
 		$side = array("Deliverables", "Code");
@@ -21,14 +20,20 @@
 	
 	
 	if($subpage == "Iteratie1"){
-		$file = "./text.html";
+		$file = "./iteratie1.html";
 		$content = file($file);
 		$text=implode($content);
+	}
+	if($subpage == "Requirements"){
+		$file = "./requirements.html";
+		$content = file($file);
+		$text = implode($content);
 	}
 	
 	if($subpage == "Deliverables"){
 		$text = "<ul>".files(".\Deliverables")."</ul>";
 	}
+	
 	
 	function files($path){
 		$dir = $path;
