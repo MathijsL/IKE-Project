@@ -11,7 +11,7 @@
 		$subpage = $_REQUEST["subpage"];
 	}
 	if($page == "documentation"){
-		$side = array("Requirements", "Iteratie 1", "Iteratie 2", "Iteratie 3");
+		$side = array("UML", "Requirements", "Iteratie 1", "Iteratie 2", "Iteratie 3");
 	}
 	if($page == "files"){
 		$side = array("Deliverables", "Code");
@@ -28,6 +28,9 @@
 		$file = "./requirements.html";
 		$content = file($file);
 		$text = implode($content);
+	}
+	if($subpage == "UML"){
+		$text = '<img src="./_uml/SequenceDiagram1.jpg" alt="Sequence diagram" width="900px"> </img>';
 	}
 	
 	if($subpage == "Deliverables"){
