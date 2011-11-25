@@ -63,14 +63,14 @@
 					if($xmlReader->name == "name"){
 						$xmlReader->read();
 						if($xmlReader->value != ""){
-							$newTrack .= "<track:<name:".$xmlReader->value.">";
+							$newTrack .= "name[".$xmlReader->value."_";
 							if($xmlReader->name == "duration") {
 								$xmlReader->read();
 								if($xmlReader->value != "") {
-									$newTrack .= "<duration:".$xmlReader->value.">";
+									$newTrack .= "duration[".$xmlReader->value;
 								}
 							}
-							$newTrack .= ">";
+							$newTrack .= "|";
 						}
 					}
 					array_push($this->tracks,$newTrack);
@@ -105,11 +105,10 @@
 		}
 		
 		public function toString() {
-			$string = "<album:<mbid:".$this->getMbid()."><name:".$this->getName()."><releasedate:".$this->getReleaseDate()."><picture:".$this->getPicture().">";
+			$string = "mbid:".$this->getMbid()."]name[".$this->getName()."]releasedate[".$this->getReleaseDate()."]picture[".$this->getPicture()."]tracks[";
 			foreach($this->tracks as $track) {
 				$string .= $track;
 			}
-			$string .= ">";
 			return $string;
 		}
 	}

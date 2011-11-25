@@ -6,33 +6,33 @@
 		
 		$keyword = $_GET['keyword'];
 		$selection = $_GET['selection'];
-		$result = "<artistInfo:";
+		$result = "";
 		$artist = new musicMatcherArtist($keyword);
 		
 		$features = explode(";",$selection);
 		
 		if(in_array('name',$features)) {
-			$result .= "<name:".$artist->getName().">";
+			$result .= "name[".$artist->getName()."*";
 		}	
 		if(in_array('beginDate',$features)) {
-			$result .= "<beginDate:".$artist->getBeginDate().">";
+			$result .= "beginDate[".$artist->getBeginDate()."*";
 		}
 		if(in_array('endDate',$features)) {
-			$result .= "<endDate:".$artist->getEndDate().">";
+			$result .= "endDate[".$artist->getEndDate()."*";
 		}
 		if(in_array('type',$features)) {
-			$result .= "<type:".$artist->getType().">";
+			$result .= "type[".$artist->getType()."*";
 		}
 		if(in_array('albums',$features)) {
-			$result .= "<albums:";
+			$result .= "albums[";
 			$albums = $artist->getAlbums();
 			foreach($albums as $album) {
-				$result .= $album->toString();
+				$result .= $album->toString().";";
 			}
-			$result .= ">";
+			$result .= "*";
 		}
 		if(in_array('picture',$features)) {
-			$result .= "<picture:".$artist->getPicture().">";
+			$result .= "picture[".$artist->getPicture();
 		}
 		
 		echo $result;
