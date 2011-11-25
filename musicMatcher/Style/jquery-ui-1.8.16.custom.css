@@ -457,6 +457,7 @@ button.ui-button-icons-only { width: 3.7em; }
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
+	outline: none;
 }
 .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
 
@@ -566,3 +567,5 @@ button.ui-button-icons-only { width: 3.7em; }
  */
 /*.ui-progressbar { height:2em; text-align: left; }
 .ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
+
+*/
