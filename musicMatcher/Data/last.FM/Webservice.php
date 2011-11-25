@@ -60,7 +60,7 @@
 		
 		//Find the artists with the same tag as the input artist and add to result
 		for($i = 0; $i < sizeof($topartists); $i++){
-			if($topartists[$i] != ""){
+			if($topartists[$i] != "" && $topartists[$i] != $relatedartist){
 				$topartisttag = getTagByArtist($topartists[$i]);
 				if($topartisttag == $artisttag && $topartists[$i] != ""){
 					$result .= "<li onclick='ShowArtist(\"" . $topartists[$i] . "\")'>" . $topartists[$i] . "</li>";
@@ -74,55 +74,30 @@
 	
 	function getArtistInfo($artist){
 		//Get artist information
-		$xmlReader = new XMLReader();
-		$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026', null, LIBXML_NOBLANKS);
-
-		//Read until the name and the image is found
-		$result = "<div style='float:left;'>";
-		while ($xmlReader->read())
-		{
-			//Check for name
-			if($xmlReader->name == "name"){
-				//Enter name node
-				$xmlReader->read();
-				//Add node value
-				$result .= "<b>" . $xmlReader->value . "</b><br />";
+		$xmlArtistInfo = simplexml_load_file('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026');
+		$result = "";
+		$result .= "name:" . (string)$xmlArtistInfo->artist->name . "|";
+		$image = $xmlArtistInfo->artist->xpath('//artist/image[@size="large"]');
+		$result .= "image:" . $image[0] . "|";
+		$result .= "$";
+		
+		$xmlTopAlbums = simplexml_load_file('http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026&limit=5');
+		$TopAlbums = $xmlTopAlbums->xpath('//topalbums/album');
+		
+		foreach ($TopAlbums as $TopAlbum) {
+			$result .= "name:" . $TopAlbum->name . "/";
+			$xmlAlbumInfo = simplexml_load_file('http://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=' . rawurlencode($artist) . '&album=' . rawurlencode($TopAlbum->name) . '&api_key=b25b959554ed76058ac220b7b2e0a026');
+			$AlbumSongs = $xmlAlbumInfo->xpath('//album/tracks/track');
+			foreach ($AlbumSongs as $AlbumSong) {
+				$result .= $AlbumSong->name;
+				$urlparts = explode(" ", $AlbumSong->name);
+				$youtubeInfo = simplexml_load_file('http://gdata.youtube.com/feeds/api/videos/-/Music/' . rawurlencode($artist) . '/' . rawurlencode($urlparts[0]) . '?max-results=1&orderby=viewCount');
+				$video = explode("/videos/", $youtubeInfo->entry->id);
+				$result .= "#" . $video[1] . "\\";
 			}
-			//Check for large image
-			if($xmlReader->name == "image" && $xmlReader->getAttribute("size") == "large"){
-				//Enter image node
-				$xmlReader->read();
-				//Add node value & break
-				$result .= "<img src='" . $xmlReader->value . "' style='margin-top: 0px; width:126px;'>";
-				break;
-			}
+			$result .= "|";
 		}
-		$xmlReader->close();
 		
-		$result .= "</div>";
-		$result .= "<div style='float:left; margin-left:20px;'>";
-		$result .= "<b>Albums</b><br /><ul>";
-		
-		//Get artist top albums
-		$xmlReader = new XMLReader();
-		$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026&limit=5', null, LIBXML_NOBLANKS);
-		while ($xmlReader->read())
-		{
-			if($xmlReader->name == "name"){
-				$xmlReader->read();
-				if($xmlReader->value != ""){
-					$result .= "<li>" . $xmlReader->value . "</li>";
-				}
-			}
-			if($xmlReader->name == "artist"){
-				$xmlReader->read();
-			}
-		}
-	
-		$result .= "</ul></div><br /><div style='position:absolute; right:10px; top:10px; cursor:pointer;'><a onclick='HideArtist();'>Close</a></div>";
-		
-		//Close reader and return found tag
-		$xmlReader->close();
 		return $result;
 	}
 

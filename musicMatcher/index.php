@@ -15,9 +15,7 @@
 			<div class="columns-3-3"><input id="searchbutton" class="borders" type="submit" value="Search" /></div>
 		</div>
 	</div>
-	<div class="resultbox">
-		<!-- RESULTS -->
-	</div>
+	<div class="resultbox"></div>
 	<div class="slider borders"></div>
 	<div class="sliderbox borders"></div>
 	<div class="lightbox"></div>

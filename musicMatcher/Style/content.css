@@ -68,7 +68,9 @@ h1,h2,h3{
 	font-weight:bold;
 	color: #000;
 	text-indent: 10px;
+	outline: none;
 }
+
 .container .searchbox .header{
 	text-align:center;
 }
@@ -101,7 +103,8 @@ h1,h2,h3{
 	margin:0;
 	list-style-type: none;
 	border-bottom: 1px solid #606060;
-		height: 30px;
+	height: 30px;
+	cursor:pointer;
 }
 .resultbox ul, .resultbox li{
 	padding-left:10px; 
@@ -116,6 +119,7 @@ h1,h2,h3{
 	background-color: #292929;
 	padding: 10px 0 10px 0;
 	display:none;
+	outline: none;
 }
 
 .slider{
@@ -124,6 +128,7 @@ h1,h2,h3{
 	right: 20px;
 	width: 18px;
 	display:none;
+	outline: none;
 }
 
 /** LIGHTBOX **/
@@ -157,9 +162,11 @@ h1,h2,h3{
 	border:none;
 	display:none;
 	min-width:360px;
+	max-width:1000px;
 	width:auto;
 	height:auto;
 	min-height:160px;
+	max-height:1000px;
 	margin: -100px 0 0 -200px;
 	position:absolute;
 	top:50%;
@@ -169,7 +176,7 @@ h1,h2,h3{
 	padding:20px;
 }
 .artistinfo ul{
-	margin:10px 0 0 0;
+	margin:0 0 0 0;
 	padding:0px;
 }
 .artistinfo li{
@@ -177,7 +184,15 @@ h1,h2,h3{
 	padding:0px;
 	list-style-type:none;
 }
-
+.albumbutton{
+	float:left;
+	width:20px;
+	height:20px;
+	text-align:center;
+	background-color:#292929;
+	vertical-align:middle;
+	cursor:pointer;
+}
 /** COMMON **/
 .orange{
 	color: orange;
@@ -186,7 +201,7 @@ h1,h2,h3{
 	color: #fff;
 	margin-left:2px;
 }
-.borders{
+.borders, .ui-autocomplete, .albumbutton{
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -197,15 +212,20 @@ h1,h2,h3{
 
 /** JQUERY UI **/
 .ui-autocomplete{
-	width: 300px;
-	overflow-y: auto;
-	overflow-x: hidden;
+	width: 343px;
+	overflow: hidden;
 	height: auto;
 	max-height:200px;
 	background-color:white;
-	padding:0px;
+	padding:5px 0 5px 0;
 	margin:0px;
-	font-size:10pt;
+	font-size:9pt;
+	border-top-right-radius: 0px;
+ 	-moz-border-radius-topright:0x;
+ 	-webkit-border-top-right-radius:0px;
+	border-top-left-radius: 0px;
+ 	-moz-border-radius-topleft:0x;
+ 	-webkit-border-top-left-radius:0px;
 }
 
 .ui-autocomplete li{
@@ -214,13 +234,13 @@ h1,h2,h3{
 	list-style-type: none;
 	background-color:white;
 	color:black;
-	width:300px;
+	width:343px;
 	margin:0px;
-	padding:0px;
 }
 .ui-autocomplete li a{
 	width:100%;
 	display:block;
+	padding: 0 10px 0 10px;
 }
 .ui-menu .ui-menu-item a.ui-state-hover,
 .ui-menu .ui-menu-item a.ui-state-active{
