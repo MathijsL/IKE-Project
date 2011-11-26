@@ -1,6 +1,6 @@
 <?php
 	//Get top 50 artist names from list.fm
-	function getTopArtist(){
+	/*function getTopArtist(){
 		//Get xml list of top 50 artists
 		$xmlReader = new XMLReader();
 		$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=b25b959554ed76058ac220b7b2e0a026&limit=50&page=1', null, LIBXML_NOBLANKS);
@@ -71,7 +71,7 @@
 		return $result . "</ul>";
 	}
 	
-	/*function getArtistInfo($artist){
+	function getArtistInfo($artist){
 		//Get artist information
 		$xmlArtistInfo = simplexml_load_file('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026');
 		$result = "";
@@ -98,7 +98,7 @@
 		}
 		
 		return $result;
-	}*/
+	}
 
 	
 	//Find related artists / return top artist
@@ -106,5 +106,5 @@
 		echo "<div class='serviceresult'>" . getRelatedArtist($_GET['keyword']) . "</div>";
 	else if ($_GET['req'] == "getTopArtist")
 		echo getTopArtist();
-	/*else if ($_GET['req'] == "getArtistInfo")
+	else if ($_GET['req'] == "getArtistInfo")
 		echo getTagByArtist($_GET['keyword']);*/

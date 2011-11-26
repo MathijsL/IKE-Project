@@ -270,7 +270,7 @@ class phpBrainz{
 	
 	private function parseArtistXML($artist){
 	    $newArtist = new phpBrainz_Artist();
-		$newArtist->setType((string)->{'artist'}['type']);
+		$newArtist->setType((string)$artist->{'artist'}['type']);
 	    $newArtist->setName((string)$artist->{'name'});
 	    $newArtist->setSortName((string)$artist->{'sort-name'});
 	    $newArtist->setId((string)$artist['id']);

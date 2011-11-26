@@ -60,10 +60,13 @@
 			{
 				if($xmlReader->name =="track") {
 					$newTrack = "";
+					$xmlReader->read();
 					if($xmlReader->name == "name"){
 						$xmlReader->read();
 						if($xmlReader->value != ""){
 							$newTrack .= "name[".$xmlReader->value."_";
+							$xmlReader->read();
+							$xmlReader->read();
 							if($xmlReader->name == "duration") {
 								$xmlReader->read();
 								if($xmlReader->value != "") {

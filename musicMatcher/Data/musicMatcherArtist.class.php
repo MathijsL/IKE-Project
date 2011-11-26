@@ -54,7 +54,7 @@
 			
 			//Get artist top albums
 			$xmlReader = new XMLReader();
-			$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026&limit=20', null, LIBXML_NOBLANKS);
+			$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026&limit=5', null, LIBXML_NOBLANKS);
 			while ($xmlReader->read())
 			{
 				if($xmlReader->name == "name"){

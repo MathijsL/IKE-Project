@@ -1,3 +1,10 @@
+//album list variables
+var current = 1;
+var max = 0;
+var min = 1;
+var width = 400;
+var headerwidth = 200;
+
 //limit menu results
 $.ui.autocomplete.prototype._renderMenu = function( ul, items ) {
    var self = this;
@@ -50,8 +57,8 @@ function GetResults(){
 	
 	//Process search request
 	$.ajax({
-		url: 'Data/last.FM/Webservice.php', //current webservice
-		data: "keyword=" + keyword + "&req=getRelatedArtist",
+		url: 'Data/Webservice.php', //current webservice
+		data: "keyword=" + keyword + "&function=getRelatedArtist",
 		success: function(data) {
 			FillResults(data);
 		}
@@ -61,8 +68,8 @@ function GetResults(){
 //Function used to get autocomplete array
 function GetAutoComplete(){
 	$.ajax({
-		url: 'Data/last.FM/Webservice.php', //current webservice
-		data: "keyword=" + "&req=getTopArtist",
+		url: 'Data/Webservice.php', //current webservice
+		data: "function=autocomplete",
 		success: function(data) {
 			FillAutoComplete(data);
 		}
@@ -118,8 +125,8 @@ function HideLoading(){
 //Function that shows the artist info
 function ShowArtist(artist){
 	$.ajax({
-		url: 'Data/last.FM/Webservice.php', //current webservice
-		data: "keyword=" + artist + "&req=getArtistInfo",
+		url: 'Data/Webservice.php', //current webservice
+		data: "keyword=" + artist + "&function=getInfo&selection=name;beginDate;endDate;type;picture;albums;",
 		success: function(data) {
 			FillArtistData(data);
 		}
@@ -134,98 +141,62 @@ function HideArtist(){
 
 //Function that fills the artist info
 function FillArtistData(data){
-	var dataparts = data.split("$");
-	var artistdata = dataparts[0].split("|");
-	var html = "<div style='float:left; margin-bottom: 20px;'>";
-	html += "<b>" + artistdata[0].split("name:")[1] + "</b>";
-	html += "<br />"; 
-	html += "<br />";
-	html += "<img style='margin-top: 0px; width:126px;' src='" + artistdata[1].split("image:")[1] + "'>";
-	html += "</div>";
-	html += "<div style='float:left; margin-left:20px;'>";
-	html += "<b>Info</b><a style='text-align:right; position:absolute; color:white; right:25px;' onclick='HideArtist()' href='#'>Close</a>";
-	html += "<br />";
-	html += "<br />";
-	html += "Age: 20<br />";
-	html += "Members: 4<br />";
-	html += "Life-expectancy: 1<br />";
-	html += "Active since: 2013 <br />";
-	html += "</div>";
-	html += "<div style='clear:both;'>";
-	html += "<div style='float:left; width:146px;'><b>Albums</b></div>";
-	html += "<div class='albumbutton'><a onclick='PrevAlbum()'><b><</b></a></div><div class='albumnamecontainer' style='overflow:hidden;white-space:nowrap; float:left;'><div class='albumname' style='width:10000px; position:relative;'></div></div><div class='albumbutton'><a onclick='NextAlbum()'><b>></b></a></div>";
-	html += "<div class='albumcontainer' style='clear:both; overflow:hidden; height:auto;'>";
-	html += "<div class='songcontainer' style='width:10000px; position:relative;margin-top:20px;'></div></div></div>";
-
-	$('.artistinfo').html(html)
-	CreateAlbum(dataparts[1]);
-	$('.artistinfo').css('margin', -(($('.artistinfo').height()+80)/2) + 'px 0 0 ' + -(($('.artistinfo').width()+40)/2) + 'px');
-	
-	$('.lightboxcontent').hide();
-	$(".artistinfo").show();
-}
-
-var current = 1;
-var max = 0;
-var min = 1;
-var width = 400;
-var headerwidth = 200;
-
-function CreateAlbum(data){
-	var albums = data.split("|");
 	var albumhtml = "";
 	var albumtitlehtml = "";
-	$.each(albums, function(i, val) {
-		if(val != ""){
-			var parts = val.split("/");
-			if(parts[1] != ""){
-				var name = parts[0].split("name:")[1];
-				albumtitlehtml += "<div style='float:left; width:" + headerwidth + "px; margin:0px; padding:0px; text-align:center'>" + name + "</div>";
-				albumhtml += "<div style='float:left; margin:0px; padding:0px; width:" + width + "px;'><ul>";
-				var songs = parts[1].split("\\");
-				$.each(songs, function(i2, val2) {
-					if(val2 != ""){
-						var songparts = val2.split("#");
-						albumhtml += "<li><div style='clear:both; width:100%; margin-top: 1px;'><div style='float:left;'>" + songparts[0] + "</div><div style='float:right; text-align:right;'><a target='_blank' href='http://www.youtube.com/watch?v=" + songparts[1] + "'><img style='border-radius: 5px; height:19px;' src='/musicMatcher/Script/youtube.png'/></a></div></div></li>";
+	var html = "";
+	var artistinfo = data.split("*");	
+	
+	html += "<div class='leftcontainer'><b>" + artistinfo[0].replace("name[","") + "</b><br /><br />";
+	html += "<img class='artistimage' src='" + artistinfo[5].replace("picture[","") + "'></div>";
+	html += "<div class='rightcontainer'><b>Info</b><a class='close' onclick='HideArtist()' href='#'>Close</a><br /><br />";
+	html += "Begindate: " + artistinfo[1].replace("beginDate[","") + "<br />";
+	html += "Enddate: " + artistinfo[2].replace("endDate[","") + "<br />";
+	html += "Type: " + artistinfo[3].replace("type[","") + "<br /></div>";
+	html += "<div class='fclear'><div class='albumheader'><b>Albums</b></div>";
+	html += "<div class='albumbutton'><a onclick='PrevAlbum()'><b><</b></a></div><div class='albumnamecontainer'><div class='albumname'></div></div><div class='albumbutton'><a onclick='NextAlbum()'><b>></b></a></div>";
+	html += "<div class='albumcontainer'><div class='songcontainer'></div></div></div>";
+
+	var albums = artistinfo[4].split(";");
+	for(var j =0; j < albums.length; j++) {		
+		var parts = albums[j].split("tracks");
+		if(parts[1] != undefined){
+			var tracks = parts[1].split("|");
+			if(tracks.length > 0){
+				albumtitlehtml += "<div class='albumtitle' style='width:" + headerwidth + "px;'>" + parts[0].split("name[")[1].split("]")[0] + "</div>";
+				albumhtml += "<div class='albumcontent' style='width:" + width + "px;'><ul>";
+				for(var l = 0; l < tracks.length; l++) {
+					var trackparts = tracks[l].split("_duration[");
+					if(trackparts[0].replace("name[", "").replace("[","") != ""){
+						albumhtml += "<li><div class='album'><div class='albumleft'>" + trackparts[0].replace("name[", "").replace("[","") + "</div><div class='albumright'><a target='_blank' href='http://www.youtube.com/watch?v='><img class='youtubeimage' src='Script/youtube.png'/></a></div></div></li>";
 					}
-				});
-				albumhtml += "</ul></div>"
+				}
 			}
 		}
-    });
-	
+		albumhtml += "</ul></div>"
+	}
+
+	$('.artistinfo').html(html);
 	$('.albumname').html(albumtitlehtml);
 	$('.songcontainer').html(albumhtml);
-	
 	$('.albumcontainer').css("width", width);
 	$('.albumnamecontainer').css("width", headerwidth);
-	
+	$('.artistinfo').css('margin', -(($('.artistinfo').height()+80)/2) + 'px 0 0 ' + -(($('.artistinfo').width()+40)/2) + 'px');
+	$('.lightboxcontent').hide();
+	$(".artistinfo").show();
 	max = $('.songcontainer > div').length;
 }
 
 function NextAlbum(){
 	if(current < max){
-		$(".songcontainer").animate({  
-			left: -(current * (width))
-			}, {duration: 1000, queue:false }
-		);
-		$(".albumname").animate({  
-			left: -(current * headerwidth)
-			}, {duration: 1000, queue:false}
-		);
+		$(".songcontainer").animate({left: -(current * (width))}, {duration: 1000, queue:false });
+		$(".albumname").animate({left: -(current * headerwidth)}, {duration: 1000, queue:false});
 		current++;
 	}
 }
 function PrevAlbum(){
 	if(current > min){
-		$(".songcontainer").animate({  
-			left: -((current-2) * (width))
-			}, {duration: 1000, queue:false}
-		);
-		$(".albumname").animate({  
-			left: -((current-2) * headerwidth)
-			}, {duration: 1000, queue:false}
-		);
+		$(".songcontainer").animate({left: -((current-2) * (width))}, {duration: 1000, queue:false});
+		$(".albumname").animate({left: -((current-2) * headerwidth)}, {duration: 1000, queue:false});
 		current--;
 	}
 }

@@ -47,7 +47,7 @@
 		include_once("lastFM.class.php");
 		
 		$lfm = new lastFM();
-		$getRelatedArtists = $lfm -> getRelatedArtist();
+		$getRelatedArtists = $lfm->getRelatedArtist($_GET['keyword']);
 		echo $getRelatedArtists;
 	}
 ?>
