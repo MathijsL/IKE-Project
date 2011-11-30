@@ -179,12 +179,12 @@ function FillArtistData(data){
 					height = tracks.length*21;
 					for(var l = 0; l < tracks.length; l++) {
 						var trackparts = tracks[l].split("_duration[");
-						var tparts = trackparts[0].replace("name[", "").replace("[","").split("#");
-						if(tparts[0] != ""){
-							if(StringLength(tparts[0]) > (width-50)){
-								width = StringLength(tparts[0])+50;
+						var tparts = trackparts[0].replace("name[", "").replace("[","");
+						if(tparts != ""){
+							if(StringLength(tparts) > (width-50)){
+								width = StringLength(tparts)+50;
 							}
-							albumhtml += "<li><div class='album'><div class='albumleft'>" + tparts[0].replace("_", "") + "</div><div class='albumright'><a target='_blank' href='http://www.youtube.com/watch?v=" + tparts[1] + "'><img class='youtubeimage' src='Script/youtube.png'/></a></div></div></li>";
+							albumhtml += "<li><div class='album'><div class='albumleft'>" + tparts.replace("_", "") + "</div><div class='albumright'></div></div></li>";//<a target='_blank' href='http://www.youtube.com/watch?v='><img class='youtubeimage' src='Script/youtube.png'/></a>
 						}
 					}
 				}
