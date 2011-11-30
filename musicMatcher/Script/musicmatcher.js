@@ -2,6 +2,7 @@
 var current = 1;
 var max = 0;
 var min = 1;
+var height = 0;
 var width = 400;
 var headerwidth = 200;
 
@@ -12,6 +13,13 @@ $.ui.autocomplete.prototype._renderMenu = function( ul, items ) {
       if (index < 10) // here we define how many results to show
          {self._renderItem( ul, item );}
       });
+}
+//find string length
+function StringLength(input)
+{
+    var ruler = $("#ruler");
+    ruler.html(input);
+    return ruler.width();
 }
 
 $(document).ready(function(){
@@ -46,7 +54,8 @@ function StartSearch(){
 	//If first search then animate
 	if($('.searchbox').position().top > 0){
 		$('.searchbox').css('top', $('.searchbox').position().top);
-		$('.searchbox,').animate({ 'top': '0px', 'marginTop': '0px'}, 300, function(){ $('.container').css("background-color", "#323232"); });
+		$('.searchbox').animate({ 'top': '0px', 'marginTop': '0px'}, 300, function(){ $('.container').css("background-color", "#323232"); });
+		$('.musicbox').animate({ 'bottom': '0px', 'marginBottom': '0px' }, 300);
 	}
 }
 
@@ -86,8 +95,8 @@ function FillAutoComplete(data){
 
 //Function used to fill result
 function FillResults(data){
-	$('.resultbox, .sliderbox').css("height", ($(window).height() - 130));
-	$('.slider').css("height", ($(window).height() - 158));
+	$('.resultbox, .sliderbox').css("height", ($(window).height() - 220));
+	$('.slider').css("height", ($(window).height() - 250));
 	$('.resultbox').css("overflow-y", "scroll").html(data);
 
 	//Set scrollbar
@@ -148,26 +157,35 @@ function FillArtistData(data){
 	
 	html += "<div class='leftcontainer'><b>" + artistinfo[0].replace("name[","") + "</b><br /><br />";
 	html += "<img class='artistimage' src='" + artistinfo[5].replace("picture[","") + "'></div>";
-	html += "<div class='rightcontainer'><b>Info</b><a class='close' onclick='HideArtist()' href='#'>Close</a><br /><br />";
+	html += "<div class='rightcontainer'><b>Info</b><a class='close' onclick='HideArtist()'>Close</a><br /><br />";
 	html += "Begindate: " + artistinfo[1].replace("beginDate[","") + "<br />";
 	html += "Enddate: " + artistinfo[2].replace("endDate[","") + "<br />";
 	html += "Type: " + artistinfo[3].replace("type[","") + "<br /></div>";
 	html += "<div class='fclear'><div class='albumheader'><b>Albums</b></div>";
 	html += "<div class='albumbutton'><a onclick='PrevAlbum()'><b><</b></a></div><div class='albumnamecontainer'><div class='albumname'></div></div><div class='albumbutton'><a onclick='NextAlbum()'><b>></b></a></div>";
-	html += "<div class='albumcontainer'><div class='songcontainer'></div></div></div>";
+	html += "<div style='height:20px;clear:both;'></div><div class='hiderdiv' style='position:absolute; background-color:#404040; right:0px; width:20px; z-index:999; height:200px;'></div><div class='albumcontainer'><div class='songcontainer'></div></div></div>";
 
+	var count = 0;
 	var albums = artistinfo[4].split(";");
 	for(var j =0; j < albums.length; j++) {		
-		var parts = albums[j].split("tracks");
+		var parts = albums[j].split("tracks[");
 		if(parts[1] != undefined){
 			var tracks = parts[1].split("|");
-			if(tracks.length > 0){
-				albumtitlehtml += "<div class='albumtitle' style='width:" + headerwidth + "px;'>" + parts[0].split("name[")[1].split("]")[0] + "</div>";
-				albumhtml += "<div class='albumcontent' style='width:" + width + "px;'><ul>";
-				for(var l = 0; l < tracks.length; l++) {
-					var trackparts = tracks[l].split("_duration[");
-					if(trackparts[0].replace("name[", "").replace("[","") != ""){
-						albumhtml += "<li><div class='album'><div class='albumleft'>" + trackparts[0].replace("name[", "").replace("[","") + "</div><div class='albumright'><a target='_blank' href='http://www.youtube.com/watch?v='><img class='youtubeimage' src='Script/youtube.png'/></a></div></div></li>";
+			if(tracks != ""){
+				if(tracks.length > 0){
+					albumtitlehtml += "<div class='albumtitle'>" + parts[0].split("name[")[1].split("]")[0] + "</div>";
+					albumhtml += "<div class='albumcontent " + count + "'><ul>";
+					count++;
+					height = tracks.length*21;
+					for(var l = 0; l < tracks.length; l++) {
+						var trackparts = tracks[l].split("_duration[");
+						var tparts = trackparts[0].replace("name[", "").replace("[","").split("#");
+						if(tparts[0] != ""){
+							if(StringLength(tparts[0]) > (width-50)){
+								width = StringLength(tparts[0])+50;
+							}
+							albumhtml += "<li><div class='album'><div class='albumleft'>" + tparts[0].replace("_", "") + "</div><div class='albumright'><a target='_blank' href='http://www.youtube.com/watch?v=" + tparts[1] + "'><img class='youtubeimage' src='Script/youtube.png'/></a></div></div></li>";
+						}
 					}
 				}
 			}
@@ -178,9 +196,11 @@ function FillArtistData(data){
 	$('.artistinfo').html(html);
 	$('.albumname').html(albumtitlehtml);
 	$('.songcontainer').html(albumhtml);
-	$('.albumcontainer').css("width", width);
-	$('.albumnamecontainer').css("width", headerwidth);
-	$('.artistinfo').css('margin', -(($('.artistinfo').height()+80)/2) + 'px 0 0 ' + -(($('.artistinfo').width()+40)/2) + 'px');
+	$('.albumcontent').css("width", width);
+	$('.albumnamecontainer, .albumtitle').css("width", headerwidth);
+	$('.albumcontainer, .hiderdiv').css("height", ($(".0 li").length * 21)).css("max-height",$(window).height()-340);
+	$('.albumcontainer').css("width", width+18);
+	$('.artistinfo').css('marginLeft',  -(($('.artistinfo').width()+40)/2) + 'px');
 	$('.lightboxcontent').hide();
 	$(".artistinfo").show();
 	max = $('.songcontainer > div').length;
@@ -190,6 +210,7 @@ function NextAlbum(){
 	if(current < max){
 		$(".songcontainer").animate({left: -(current * (width))}, {duration: 1000, queue:false });
 		$(".albumname").animate({left: -(current * headerwidth)}, {duration: 1000, queue:false});
+		$('.albumcontainer, .hiderdiv').animate({ 'height' : ($("."+current+" li").length * 21)}, {duration: 1000, queue:false});
 		current++;
 	}
 }
@@ -197,6 +218,7 @@ function PrevAlbum(){
 	if(current > min){
 		$(".songcontainer").animate({left: -((current-2) * (width))}, {duration: 1000, queue:false});
 		$(".albumname").animate({left: -((current-2) * headerwidth)}, {duration: 1000, queue:false});
+		$('.albumcontainer, .hiderdiv').animate({ 'height' : ($("."+(current-2)+" li").length * 21)}, {duration: 1000, queue:false});
 		current--;
 	}
 }

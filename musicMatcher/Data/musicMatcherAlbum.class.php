@@ -65,14 +65,19 @@
 						$xmlReader->read();
 						if($xmlReader->value != ""){
 							$newTrack .= "name[".$xmlReader->value."_";
+							$urlparts = explode(" ", $xmlReader->value);
+							$artistparts = explode(" ", $artist);
+							$youtubeInfo = simplexml_load_file('http://gdata.youtube.com/feeds/api/videos/-/Music/' . rawurlencode($artistparts[0]) . '/' . rawurlencode($urlparts[0]) . '?max-results=1&orderby=viewCount');
+							$video = explode("/videos/", $youtubeInfo->entry->id);
+							$newTrack .= "#" . $video[1];
 							$xmlReader->read();
 							$xmlReader->read();
-							if($xmlReader->name == "duration") {
+							//if($xmlReader->name == "duration") {
 								$xmlReader->read();
-								if($xmlReader->value != "") {
-									$newTrack .= "duration[".$xmlReader->value;
-								}
-							}
+							//	if($xmlReader->value != "") {
+							//		$newTrack .= "duration[".$xmlReader->value;
+							//	}
+							//}
 							$newTrack .= "|";
 						}
 					}

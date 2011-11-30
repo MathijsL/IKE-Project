@@ -16,6 +16,9 @@
 		</div>
 	</div>
 	<div class="resultbox"></div>
+	<div class="musicbox borders">
+	</div>
+	<div id="ruler"></div>
 	<div class="slider borders"></div>
 	<div class="sliderbox borders"></div>
 	<div class="lightbox"></div>

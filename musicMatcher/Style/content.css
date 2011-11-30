@@ -25,27 +25,44 @@ h1,h2,h3{
 	width: 820px;
 	height: 100%;
 	margin: 0 auto 0 -410px;
+	overflow: hidden;
 }
 
 /** SEARCHBOX **/
-.searchbox{
+.searchbox, .musicbox{
 	font-family: bauhaus;
 	position:fixed;
 	font-size:30pt;
-	top: 50%;
 	left: 50%;
 	height: 50px;
 	width: 800px;
-	margin: -70px auto 0 -420px;
 	padding:20px;
 	background-color:#2f2f2f;
+	text-align:center;
+}
+.musicbox{
+	z-index:899;
+	bottom: 50%;
+	margin: 0px auto -20px -420px;
+}
+.musicbox{
+	background-image: linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
+	background-image: -o-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
+	background-image: -moz-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
+	background-image: -webkit-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
+	background-image: -ms-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
+}
+.searchbox{
+	z-index:900;
+	top: 50%;
+	margin: -70px auto 0 -420px;
+}	
+.searchbox, .lightboxcontent{
 	background-image: linear-gradient(bottom, rgb(66,66,66) 24%, rgb(47,47,47) 69%);
 	background-image: -o-linear-gradient(bottom, rgb(66,66,66) 24%, rgb(47,47,47) 69%);
 	background-image: -moz-linear-gradient(bottom, rgb(66,66,66) 24%, rgb(47,47,47) 69%);
 	background-image: -webkit-linear-gradient(bottom, rgb(66,66,66) 24%, rgb(47,47,47) 69%);
 	background-image: -ms-linear-gradient(bottom, rgb(66,66,66) 24%, rgb(47,47,47) 69%);
-	text-align:center;
-	z-index:900;
 }
 
 /** SEARCHBUTTON **/
@@ -94,6 +111,7 @@ h1,h2,h3{
 /** RESULTBOX **/
 .resultbox{
 	margin-top:110px;
+	margin-bottom:110px;
 	width: 760px;
 	padding: 0 20px 0 20px;
 	display:none;
@@ -130,9 +148,9 @@ h1,h2,h3{
 	height:auto;
 	min-height:160px;
 	max-height:1000px;
-	margin: -100px 0 0 -200px;
+	margin: 0px 0 0 -200px;
 	position:absolute;
-	top:50%;
+	top:30px;
 	left:50%;
 	z-index:999;
 	background-color: #404040;
@@ -186,6 +204,7 @@ h1,h2,h3{
 .artistinfo li{
 	margin:0px;
 	padding:0px;
+	height: 20px;
 	list-style-type:none;
 }
 .albumheader{
@@ -212,13 +231,14 @@ h1,h2,h3{
 }
 .albumcontainer{
 	clear:both; 
-	overflow:hidden; 
+	overflow-x:hidden;
+	overflow-y:scroll;	
 	height:auto;
+	margin-right:-18px;
 }
 .songcontainer{
 	width:10000px; 
 	position:relative;
-	margin-top:20px;
 }
 .slider{
 	position:absolute;
@@ -227,6 +247,12 @@ h1,h2,h3{
 	width: 18px;
 	display:none;
 	outline: none;
+}
+#ruler{
+	visibility: hidden; 
+	white-space: nowrap;
+	width:auto;
+	position:absolute;
 }
 
 /** LIGHTBOX **/

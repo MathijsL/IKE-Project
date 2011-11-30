@@ -50,7 +50,7 @@ class lastFM {
 	}
 	
 	function getRelatedArtist($relatedartist){
-		$result = "<ul>";
+		$result = "<div class='serviceresult'><ul>";
 		
 		//Get the fist tag from the input artist
 		$artisttag = $this->getTagByArtist($relatedartist);
@@ -69,7 +69,7 @@ class lastFM {
 		}
 		
 		//Return the found artists
-		return $result . "</ul>";
+		return $result . "</ul></div>";
 	}
 }
 
