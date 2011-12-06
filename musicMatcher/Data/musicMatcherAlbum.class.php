@@ -19,7 +19,7 @@
 			$this->listeners = $json_info[album][listeners];
 			$this->playcount = $json_info[album][playcount];
 		
-			if(count($json_info[album][tracks][track]) > 0){
+			if(isset($json_info[album][tracks][track][0])){
 				foreach($json_info[album][tracks][track] as $t){
 					array_push($this->tracks,new musicMatcherTrack($t));
 				}	
