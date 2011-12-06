@@ -1,87 +1,60 @@
 <?php
-	require_once("phpBrainz/phpBrainz.class.php");
-	require_once("phpBrainz/phpBrainz.artist.class.php");
 	require_once("musicMatcherAlbum.class.php");
 	
 	class musicMatcherArtist{
 		public $mbid;
 		public $name;
-		public $beginDate;
-		public $endDate;
+		public $begindate;
+		public $enddate;
 		public $type;
 		public $albums = array();
 		public $picture;
-		public $releasesCount;
-		public $releasesOffset;
-		public $artistObject;
+		public $features;
 		
-		public function __construct($artist) {
-			//Get artist information
-			$xmlReader = new XMLReader();
-			$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026', null, LIBXML_NOBLANKS);
+		public function __construct($artist, $values) {
+			$this->features = explode(";",$values);
 			
-			//Read until the name and the image is found
-			while ($xmlReader->read())
-			{
-				//Check for name
-				if($xmlReader->name == "name"){
-					//Enter name node
-					$xmlReader->read();
-					//Add node value
-					if($xmlReader->value != "") {
-						$this->name = $xmlReader->value;
-					}
+			//Get mbid
+			if(in_array('name',$this->features) || in_array('picture',$this->features) || in_array('type',$this->features) || in_array('begindate',$this->features) || in_array('enddate',$this->features)){
+				$json_info=json_decode(file_get_contents('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026&format=json'), true);
+				$this->mbid = $json_info[artist][mbid];
+			}
+		
+			//Get last fm info
+			if(in_array('name',$this->features) || in_array('picture',$this->features)) {
+				if(in_array('name',$this->features)) {
+					$this->name = $json_info[artist][name];
 				}
-				//Check for mbid
-				if($xmlReader->name == "mbid"){
-					//Enter name node
-					$xmlReader->read();
-					//Add node value
-					if($xmlReader->value != "") {
-						$this->mbid = $xmlReader->value;
-					}
-				}
-				//Check for large image
-				if($xmlReader->name == "image" && $xmlReader->getAttribute("size") == "large"){
-					//Enter image node
-					$xmlReader->read();
-					//Add node value & break
-					$this->picture = $xmlReader->value;
-					break;
+				if(in_array('picture',$this->features)) {
+					$this->picture = $json_info[artist][image][2]["#text"];
 				}
 			}
-			$xmlReader->close();
 			
-			//Get artist top albums
-			$xmlReader = new XMLReader();
-			$xmlReader->open('http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026&limit=5', null, LIBXML_NOBLANKS);
-			while ($xmlReader->read())
-			{
-				if($xmlReader->name == "name"){
-					$xmlReader->read();
-					if($xmlReader->value != ""){
-						array_push($this->albums,new musicMatcherAlbum($artist,$xmlReader->value));
-					}
+			//Get musicbrainz info
+			if(in_array('type',$this->features) || in_array('begindate',$this->features) || in_array('enddate',$this->features)) {
+				$xml_info = simplexml_load_file("http://musicbrainz.org/ws/1/artist/".$this->mbid."?type=xml&inc=");
+				if(in_array('type',$this->features)) {
+					$this->type = ((string)$xml_info->{'artist'}['type']);
 				}
-				if($xmlReader->name == "artist"){
-					$xmlReader->read();
+				if(in_array('begindate',$this->features)) {
+					$this->begindate = ((string)$xml_info->artist->{'life-span'}['begin']);
 				}
-			}		
-			//Close reader and return found tag
-			$xmlReader->close();
-			
-			
-			//MusicBrainz info
-			
-			//Create new phpBrainz object
-			$phpBrainz = new phpBrainz();
+				if(in_array('enddate',$this->features)) {
+					$this->enddate = ((string)$xml_info->artist->{'life-span'}['end']);
 					
-			$this->artistObject = $phpBrainz -> getArtist($this->mbid);
-			$this->beginDate = $this->artistObject -> getBeginDate();
-			$this->endDate = $this->artistObject -> getEndDate();
-			$this->type = $this->artistObject -> getType();
-			$this->releasesCount = $this->artistObject -> getReleasesCount();
-			$this->releasesOffset = $this->artistObject -> getReleasesOffset();
+					if($this->enddate == "")
+						$this->enddate = "Active";
+				}
+			}
+		
+			//Get artist albums		
+			if(in_array('albums',$this->features)) {
+				$json_albums=json_decode(file_get_contents('http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=' . rawurlencode($artist) . '&api_key=b25b959554ed76058ac220b7b2e0a026&limit=5&format=json'), true);
+				
+				foreach($json_albums[topalbums][album] as $a){
+					array_push($this->albums, new musicMatcherAlbum($artist, $a[name]));
+				}		  
+			}
 		}
 		
 		public function getMbid() {
@@ -112,12 +85,37 @@
 			return $this->picture;
 		}
 		
-		public function getReleasesCount() {
-			return $this->releasesCount;
-		}
+		public function toString(){
+			$result = "{\"artist\":{";
 		
-		public function getReleasesOffset() {
-			return $this->releasesOffset;
+			if(in_array('name',$this->features)) {
+				$result .= "\"name\":\"".$this->name."\",";
+			}	
+			if(in_array('mbid',$this->features)) {
+				$result .= "\"mbid\":\"".$this->mbid."\",";
+			}	
+			if(in_array('begindate',$this->features)) {
+				$result .= "\"begindate\":\"".$this->begindate."\",";
+			}
+			if(in_array('enddate',$this->features)) {
+				$result .= "\"enddate\":\"".$this->enddate."\",";
+			}
+			if(in_array('type',$this->features)) {
+				$result .= "\"type\":\"".$this->type."\",";
+			}
+			if(in_array('picture',$this->features)) {
+				$result .= "\"picture\":\"".$this->picture."\",";
+			}
+			if(in_array('albums',$this->features)) {
+				$result .= "\"albums\":[";
+				foreach($this->albums as $album) {
+					$result .= $album->toString().",";
+				}
+				
+				$result = substr($result, 0, -1)."],";
+			}
+			
+			return substr($result, 0, -1) . "}}";
 		}
 	}
 ?>

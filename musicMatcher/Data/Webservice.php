@@ -3,51 +3,23 @@
 	
 	if ($function == "getInfo" && isset($_GET['keyword']) && isset($_GET['selection'])) {
 		include_once("musicMatcherArtist.class.php");
+		$artist = new musicMatcherArtist($_GET['keyword'], $_GET['selection']);
+		echo $artist->toString();
 		
-		$keyword = $_GET['keyword'];
-		$selection = $_GET['selection'];
-		$result = "";
-		$artist = new musicMatcherArtist($keyword);
-		
-		$features = explode(";",$selection);
-		
-		if(in_array('name',$features)) {
-			$result .= "name[".$artist->getName()."*";
-		}	
-		if(in_array('beginDate',$features)) {
-			$result .= "beginDate[".$artist->getBeginDate()."*";
-		}
-		if(in_array('endDate',$features)) {
-			$result .= "endDate[".$artist->getEndDate()."*";
-		}
-		if(in_array('type',$features)) {
-			$result .= "type[".$artist->getType()."*";
-		}
-		if(in_array('albums',$features)) {
-			$result .= "albums[";
-			$albums = $artist->getAlbums();
-			foreach($albums as $album) {
-				$result .= $album->toString().";";
-			}
-			$result .= "*";
-		}
-		if(in_array('picture',$features)) {
-			$result .= "picture[".$artist->getPicture();
-		}
-		
-		echo $result;
-		
-	} else if ($function == "autocomplete") {
-		include_once("lastFM.class.php");
-		
-		$lfm = new lastFM();
-		$topArtists = $lfm -> getTopArtist();
-		echo $topArtists;
 	} else if ($function == "getRelatedArtist" && isset($_GET['keyword'])){
-		include_once("lastFM.class.php");
+		$result = "{\"artists\":[";
 		
-		$lfm = new lastFM();
-		$getRelatedArtists = $lfm->getRelatedArtist($_GET['keyword']);
-		echo $getRelatedArtists;
+		$json_o=json_decode(file_get_contents('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . rawurlencode($_GET['keyword']) . '&api_key=b25b959554ed76058ac220b7b2e0a026&format=json'));
+		$artisttag = $json_o->artist->tags->tag[0]->name;
+
+		$json_o=json_decode(file_get_contents('http://ws.audioscrobbler.com/2.0/?method=tag.gettopartists&tag=' . rawurlencode($artisttag) . '&api_key=b25b959554ed76058ac220b7b2e0a026&format=json'));
+		foreach($json_o->topartists->artist as $p){
+			$result .= "{\"name\":\"" . $p->name . "\"},";
+		}
+		
+		if(count($json_o->topartists->artist) > 0)
+				$result = substr($result, 0, -1);
+		
+		echo $result . "]}";
 	}
 ?>

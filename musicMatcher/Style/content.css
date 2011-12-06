@@ -122,7 +122,6 @@ h1,h2,h3{
 	list-style-type: none;
 	border-bottom: 1px solid #606060;
 	height: 30px;
-	cursor:pointer;
 }
 .resultbox ul, .resultbox li{
 	padding-left:10px; 
@@ -156,35 +155,59 @@ h1,h2,h3{
 	background-color: #404040;
 	padding:20px;
 }
-.artistinfo .rightcontainer{
+.rightcontainer{
 	float:left; 
 	margin-left:20px;
 }
-.artistinfo .leftcontainer{
+.leftcontainer{
 	float:left; 
 	margin-bottom: 20px;
 }
-.artistinfo .artistimage{
+.artistimage{
 	margin-top: 0px; 
-	width:126px;
+	width:90px;
 }	
-.artistinfo .songcontainer .album{
+.songcontainer .album{
 	clear:both; 
 	width:100%; 
 	margin-top: 1px;
 }
-.artistinfo .songcontainer .album .albumleft{
+.songcontainer .album .albumleft{
 	float:left;
 }
-.artistinfo .songcontainer .album .albumright{
+.songcontainer .album .albumright{
 	float:right; 
 	text-align:right;
 }
-.artistinfo .songcontainer .album .youtubeimage{
+.songcontainer .album .youtubeimage{
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	height:19px;
+}
+.albumcontainer .songcontainer li{
+	font-size: 8pt;
+	padding:0 0 0 0; 
+	margin:0;
+	list-style-type: none;
+	border-bottom: 0px solid #606060;
+	height: 15px;
+	width: 330px;
+}
+.albumcontainer .songcontainer ul{
+	padding:0 0 20px 0; 
+	margin:0 0 0 0;
+	list-style-type: none;
+	border-bottom: 0px solid #606060;
+	height: 20px;
+}
+.artistname{
+	cursor:pointer;
+}
+.albumimage{
+	width:90px;
+	float:left;
+	margin-right:20px;
 }
 .albumtitle{
 	float:left;
@@ -220,6 +243,17 @@ h1,h2,h3{
 	vertical-align:middle;
 	cursor:pointer;
 }
+.addbutton{
+	float:left;
+	width:15px;
+	height:15px;
+	text-align:center;
+	background-color:#292929;
+	cursor:pointer;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
 .albumnamecontainer{
 	overflow:hidden;
 	white-space:nowrap; 
@@ -231,10 +265,15 @@ h1,h2,h3{
 }
 .albumcontainer{
 	clear:both; 
-	overflow-x:hidden;
-	overflow-y:scroll;	
+	overflow:hidden;
+	margin-right:-28px;
+}
+.artistinfoli{
+	height:15px;
+}
+.artistinfoul{
 	height:auto;
-	margin-right:-18px;
+	float:left;
 }
 .songcontainer{
 	width:10000px; 
