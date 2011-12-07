@@ -25,13 +25,13 @@ h1,h2,h3{
 	width: 820px;
 	height: 100%;
 	margin: 0 auto 0 -410px;
-	overflow: hidden;
+	overflow: visible;
 }
 
 /** SEARCHBOX **/
 .searchbox, .musicbox{
 	font-family: bauhaus;
-	position:fixed;
+	position:absolute;
 	font-size:30pt;
 	left: 50%;
 	height: 50px;
@@ -81,7 +81,7 @@ h1,h2,h3{
 #inputkeywords{
 	height: 30px;
 	border: 0px;
-	width:360px;
+	width:320px;
 	font-weight:bold;
 	color: #000;
 	text-indent: 10px;
@@ -100,7 +100,6 @@ h1,h2,h3{
 .container .columns-3-2{
 	float: left;
 	margin-top: 12px;
-	margin-left: 35px;
 }	
 .container .columns-3-3{
 	float:left;
@@ -272,6 +271,10 @@ h1,h2,h3{
 #music{
 	margin-top:7px;
 }
+.spacer{
+	height:20px;
+	clear:both;
+}
 .albumheader{
 	float:left; 
 	width:100%;
@@ -292,7 +295,7 @@ h1,h2,h3{
 }
 .addbutton{
 	float:left;
-	width:15px;
+	width:45px;
 	height:15px;
 	text-align:center;
 	background-color:#292929;
@@ -401,7 +404,17 @@ a.close{
 	color: #fff;
 	margin-left:2px;
 }
-.borders, .ui-autocomplete, .albumbutton{
+.ui-autocomplete, .albumbutton{
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+.bordersbig{
+	border-radius: 70px;
+	-moz-border-radius: 70px;
+	-webkit-border-radius: 70px;
+}
+.borders, .borderssmall{
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -412,7 +425,7 @@ a.close{
 
 /** JQUERY UI **/
 .ui-autocomplete{
-	width: 343px;
+	width: 283px;
 	overflow: hidden;
 	height: auto;
 	max-height:200px;
@@ -434,7 +447,7 @@ a.close{
 	list-style-type: none;
 	background-color:white;
 	color:black;
-	width:343px;
+	width:283px;
 	margin:0px;
 }
 .ui-autocomplete li a{

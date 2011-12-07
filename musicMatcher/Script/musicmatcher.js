@@ -7,10 +7,7 @@ var height = 0;
 //limit menu results
 $.ui.autocomplete.prototype._renderMenu = function( ul, items ) {
    var self = this;
-   $.each( items, function( index, item ) {
-      if (index < 10) // here we define how many results to show
-         {self._renderItem( ul, item );}
-      });
+   $.each( items, function( index, item ) {if (index < 10){self._renderItem( ul, item );}});
 }
 
 //on window resize resize window
@@ -40,17 +37,17 @@ $(document).ready(function(){
 });
 
 function StartSearch(){
-	//Hide autocomplete bars
-	$('.ui-autocomplete').hide();
+	$('.searchbox, .musicbox').removeClass('bordersbig').addClass('borderssmall');
 
+	$('.ui-autocomplete').css("visibility","hidden");
+	
 	//Show loading start fetching results
-	ShowLoading();
+	ChangeLoading(true);
 	GetResults();
 	
 	//If first search then animate
 	if($('.searchbox').position().top > 0){
-		$('.searchbox').css('top', $('.searchbox').position().top);
-		$('.searchbox').animate({ 'top': '0px', 'marginTop': '0px'}, 300, function(){ $('.container').css("background-color", "#323232"); });
+		$('.searchbox').css('top', $('.searchbox').position().top).animate({ 'top': '0px', 'marginTop': '0px'}, 300, function(){ $('.container').css("background-color", "#323232"); });
 		$('.musicbox').animate({ 'bottom': '0px', 'marginBottom': '0px' }, 300);
 	}
 }
@@ -58,7 +55,7 @@ function StartSearch(){
 //Function used for hovering
 function StarHover(rowid, rating){
 	for(var i = 5; i > 0; i--)
-		$("."+rowid+" .rating ."+i).css("background", (i > rating) ? "url('../Script/stargray.png')" : "url('../Script/starglow.png')");
+		$("."+rowid+" .rating ."+i).css("background", (i > rating) ? "url('Script/stargray.png')" : "url('Script/starglow.png')");
 }
 //Function that return the html of the rating system
 function SetRating(artistname, rowid, rating){
@@ -77,24 +74,26 @@ function GetResults(){
 	
 	$.getJSON('Data/Webservice.php?keyword=' + keyword + '&function=getRelatedArtist',
 		function(data){
+			$('.ui-autocomplete').hide();
+			$('.ui-autocomplete').css("visibility","visible");
 			$('.resultbox, .sliderbox').css("height", ($(window).height() - 220));
 			$('.slider').css("height", ($(window).height() - 250));
 	
 			var result = "<div class='serviceresult'><ul>";
 			$.each(data.artists, function(i, artist) { 
 				var rating = 3;
-				result += "<li style='position:relative;' class='a" + i + "'><div class='backgroundbox'></div><div class='loadingbox'></div><div class='artistname' onclick='ShowArtist(\"" + artist.name + "\", \"a"+ i + "\")'><b>" + artist.name + "</b></div><div class='loading'><img style='height:25px; z-index:999;' src='Script/loading.gif'/></div><div class='rating'>" + SetRating(artist.name, 'a'+i, rating) + "</div><br /><br /><div class='artistcontent'></div></li>";
+				result += "<li style='position:relative;' class='a" + i + "'><div class='backgroundbox'></div><div class='loadingbox'></div><div class='artistname'><a onmousedown='ShowArtist(\"" + artist.name + "\", \"a"+ i + "\")'><b>" + artist.name + "</b></a></div><div class='loading'><img style='height:25px; z-index:999;' src='Script/loading.gif'/></div><div class='rating'>" + SetRating(artist.name, 'a'+i, rating) + "</div><br /><br /><div class='artistcontent'></div></li>";
 			});
+			
 			result + "</ul></div>";
 			$('.resultbox').css("overflow-y", "scroll").html(result);
 
 			//Set scrollbar
 			$('.slider').slider({ orientation: 'vertical', max: '1000', min: '0', value: '1000'});
 			$(".slider").bind("slide change stop slidestop", function (event, ui) {
-				var maxheight = $(".resultbox").height();
-				var height = $(".serviceresult").height();
-				if (height > maxheight)
-					$(".resultbox").scrollTop((height-maxheight)-(($(".slider").slider("option", "value") / 1000) * (height - maxheight)));
+				var hdiff = $(".resultbox").height() - $(".serviceresult").height();
+				if (hdiff > 0)
+					$(".resultbox").scrollTop((height-maxheight)-(($(".slider").slider("option", "value") / 1000) * (hdiff)));
 				else
 					$( ".slider" ).slider( "option", "value", 1000);
 			});		
@@ -103,7 +102,7 @@ function GetResults(){
 			});
 						
 			$('.resultbox').hide();
-			HideLoading();
+			ChangeLoading(false);
 			$('.slider, .sliderbox').show();
 			$('.resultbox').fadeIn(300);
 		}
@@ -113,28 +112,23 @@ function GetResults(){
 //Function used to get autocomplete array
 function GetAutoComplete(){
 	$.getJSON('http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=b25b959554ed76058ac220b7b2e0a026&limit=50&page=1&format=json',
-		function(data){
+		function(d){
 			var adata = [];
-			$.each(data.artists.artist, function(i,item){adata[i] = item.name;});
+			$.each(d.artists.artist, function(i,item){adata[i] = item.name;});
 			$("#inputkeywords").autocomplete({source: adata, position: {my: "center top", at: "bottom" }});
 		}
 	);
 }
 
 //Function that shows the loading box
-function ShowLoading(){
-	$(".lightbox, .lightboxcontent").css("display", "block");
-}
-
-//Function that hides the loading box
-function HideLoading(){
-	$(".lightbox, .lightboxcontent").css("display", "none");
+function ChangeLoading(v){
+	$(".lightbox, .lightboxcontent").css("display", (v) ? "block" : "none");
 }
 
 //Changes the music
-function changeMusic(query){
-	$.post("Data/WebserviceGS.php", {query: query}, function(xml) {
-		$("#music").html(xml);
+function changeMusic(q){
+	$.post("Data/WebserviceGS.php", {query: q}, function(d) {
+		$("#music").html(d);
 	});
 }
 
@@ -151,29 +145,27 @@ function ShowArtist(artist, cn){
 		min = 1;
 
 		$.getJSON('Data/Webservice.php?keyword=' + artist + '&function=getInfo&selection=mbid;name;begindate;enddate;type;picture;albums;',
-			function(data){
+			function(d){
 				var albumhtml = "";
 				var albumtitlehtml = "";
-				var html = "";
 				var count = 0;
 					
 				//process json
-				html += "<div class='leftcontainer'><img class='artistimage' src='" + data.artist.picture + "'></div><div class='rightcontainer'>";
-				html += "Begindate: " + data.artist.begindate + "<br />Enddate: " + data.artist.enddate + "<br />Type: " + data.artist.type + "<br /></div>";
-				html += "<div class='fclear'><div class='albumheader'><b>Albums</b></div><br /><br />";
+				html = "<div class='leftcontainer'><img class='artistimage' src='" + d.artist.picture + "'></div><div class='rightcontainer'>";
+				html += "Begindate: " + d.artist.begindate + "<br />Enddate: " + d.artist.enddate + "<br />Type: " + d.artist.type + "<br /></div><div class='fclear'><div class='albumheader'><b>Albums</b></div><br /><br />";
 				html += "<div class='albumbutton'><a onclick='PrevAlbum(\""+ cn + "\")'><b><</b></a></div><div class='albumnamecontainer'><div class='albumname'></div></div><div class='albumbutton'><a onclick='NextAlbum(\""+ cn + "\")'><b>></b></a></div>";
-				html += "<div style='height:20px;clear:both;'></div><div class='albumcontainer'><div class='songcontainer'></div></div><div style='height:20px;clear:both;'></div>";
+				html += "<div class='spacer'></div><div class='albumcontainer'><div class='songcontainer'></div></div><div class='spacer'></div>";
 
-				$.each(data.artist.albums, function(i, album) { 
+				$.each(d.artist.albums, function(i, album) { 
 					if(album.tracks.length > 0){
 						albumtitlehtml += "<div class='albumtitle'>" + album.name + "</div>";
 						albumhtml += "<div class='albumcontent " + count + "'><img src='" + album.picture + "' class='albumimage'/><ul class='artistinfoul'>";
-						height = data.artist.albums.length*16;
+						height = d.artist.albums.length*16;
 						count++;
 						
 						$.each(album.tracks, function(p, track){
 							if(track.name != "")
-								albumhtml += "<li class='artistinfoli'><div class='album'><div class='albumleft'>" + track.name + "</div><div class='albumright'><div class='addbutton'><a onclick='changeMusic(\"" + track.name + " " + data.artist.name + "\")'><b>+</b></a></div></div></div></li>";
+								albumhtml += "<li class='artistinfoli'><div class='album'><div class='albumleft'>" + track.name + "</div><div class='albumright'><div class='addbutton'><a onclick='changeMusic(\"" + track.name + " " + d.artist.name + "\")'><b>Play</b></a></div></div></div></li>";
 						});
 						albumhtml += "</ul></div>"
 					}
@@ -182,10 +174,8 @@ function ShowArtist(artist, cn){
 				//hide the openend artists
 				$.each($(".resultbox li .artistcontent"), function(i, item){
 					$(".backgroundbox").fadeOut(500);
-					if($(item).css("display") != "none"){
-						$(item).slideToggle("slow", function(){$(item).parent().css("height","");});
-						$(item).fadeOut("slow");
-					}
+					if($(item).css("display") != "none")
+						$(item).slideToggle("slow", function(){$(item).parent().css("height","");}).fadeOut("slow");
 				});
 				
 				//show the new data
