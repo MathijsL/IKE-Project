@@ -4,6 +4,37 @@ var max = 0;
 var min = 1;
 var height = 0;
 
+(function ($) {
+    var imgList = [];
+    $.extend({
+        preload: function (imgArr, option) {
+            var setting = $.extend({
+                init: function (loaded, total) { },
+                loaded: function (img, loaded, total) { },
+                loaded_all: function (loaded, total) { }
+            }, option);
+            var total = imgArr.length;
+            var loaded = 0;
+
+            setting.init(0, total);
+            for (var i in imgArr) {
+                imgList.push($("<img />")
+					.attr("src", imgArr[i])
+					.load(function () {
+					    loaded++;
+					    setting.loaded(this, loaded, total);
+					    if (loaded == total) {
+					        setting.loaded_all(loaded, total);
+					    }
+					})
+				);
+            }
+
+        }
+    });
+})(jQuery);
+
+
 //limit menu results
 $.ui.autocomplete.prototype._renderMenu = function( ul, items ) {
    var self = this;
@@ -47,7 +78,7 @@ function StartSearch(){
 	
 	//If first search then animate
 	if($('.searchbox').position().top > 0){
-		$('.searchbox').css('top', $('.searchbox').position().top).animate({ 'top': '0px', 'marginTop': '0px'}, 300, function(){ $('.container').css("background-color", "#323232"); });
+		$('.searchbox').css('top', $('.searchbox').position().top).animate({ 'top': '0px', 'marginTop': '0px'}, 300, function(){ $('.container').css("background-color", "#474747").css('border-left','1px solid #303030').css('border-right', '1px solid #303030'); });
 		$('.musicbox').animate({ 'bottom': '0px', 'marginBottom': '0px' }, 300);
 	}
 }
@@ -82,7 +113,7 @@ function GetResults(){
 			var result = "<div class='serviceresult'><ul>";
 			$.each(data.artists, function(i, artist) { 
 				var rating = 3;
-				result += "<li style='position:relative;' class='a" + i + "'><div class='backgroundbox'></div><div class='loadingbox'></div><div class='artistname'><a onmousedown='ShowArtist(\"" + artist.name + "\", \"a"+ i + "\")'><b>" + artist.name + "</b></a></div><div class='loading'><img style='height:25px; z-index:999;' src='Script/loading.gif'/></div><div class='rating'>" + SetRating(artist.name, 'a'+i, rating) + "</div><br /><br /><div class='artistcontent'></div></li>";
+				result += "<li style='position:relative;' class='a" + i + "'><div class='backgroundbox'></div><div class='loadingbox'></div><div class='artistname' style='width:400px; z-index:300'><a onmousedown='ShowArtist(\"" + artist.name + "\", \"a"+ i + "\")'><b>" + artist.name + "</b></a></div><div class='loading'><img style='height:25px; z-index:999;' src='Script/loading.gif'/></div><div class='rating'>" + SetRating(artist.name, 'a'+i, rating) + "</div><br /><br /><div class='artistcontent'></div></li>";
 			});
 			
 			result + "</ul></div>";
@@ -91,11 +122,14 @@ function GetResults(){
 			//Set scrollbar
 			$('.slider').slider({ orientation: 'vertical', max: '1000', min: '0', value: '1000'});
 			$(".slider").bind("slide change stop slidestop", function (event, ui) {
-				var hdiff = $(".resultbox").height() - $(".serviceresult").height();
-				if (hdiff > 0)
-					$(".resultbox").scrollTop((height-maxheight)-(($(".slider").slider("option", "value") / 1000) * (hdiff)));
-				else
+				var maxheight = $(".resultbox").height();
+				var height = $(".serviceresult").height();
+				if (height > maxheight) {
+					$(".resultbox").scrollTop((height-maxheight)-(($(".slider").slider("option", "value") / 1000) * (height - maxheight)));
+				}
+				else{
 					$( ".slider" ).slider( "option", "value", 1000);
+				}
 			});		
 			$('.resultbox').scroll(function(){	
 				$( ".slider" ).slider( "option", "value", (1000-(($(".resultbox").scrollTop()/($(".serviceresult").height() - $(".resultbox").height()))*1000)));
@@ -105,6 +139,13 @@ function GetResults(){
 			ChangeLoading(false);
 			$('.slider, .sliderbox').show();
 			$('.resultbox').fadeIn(300);
+			$.each($(".resultbox li .artistcontent"), function(i, item){
+					$(".backgroundbox").fadeOut(500);
+					if($(item).css("display") != "none")
+						$(item).slideToggle("slow", function(){$(item).parent().css("height","");}).fadeOut("slow");
+				});
+			$("#inputkeywords").focusout();
+			$(".resultbox").focus();
 		}
 	);
 }
@@ -149,6 +190,9 @@ function ShowArtist(artist, cn){
 				var albumhtml = "";
 				var albumtitlehtml = "";
 				var count = 0;
+				var images = [];
+				images[0] = d.artist.picture;
+				var imgc = 1;
 					
 				//process json
 				html = "<div class='leftcontainer'><img class='artistimage' src='" + d.artist.picture + "'></div><div class='rightcontainer'>";
@@ -160,6 +204,8 @@ function ShowArtist(artist, cn){
 					if(album.tracks.length > 0){
 						albumtitlehtml += "<div class='albumtitle'>" + album.name + "</div>";
 						albumhtml += "<div class='albumcontent " + count + "'><img src='" + album.picture + "' class='albumimage'/><ul class='artistinfoul'>";
+						images[imgc] = album.picture;
+						imgc++;
 						height = d.artist.albums.length*16;
 						count++;
 						
@@ -178,21 +224,22 @@ function ShowArtist(artist, cn){
 						$(item).slideToggle("slow", function(){$(item).parent().css("height","");}).fadeOut("slow");
 				});
 				
-				//show the new data
-				$("."+cn).css("height", "auto");
-				$("."+cn+" .artistcontent").html(html).ready(function(){ 
-					$("."+cn+' .albumname').html(albumtitlehtml).ready(function(){ 
-						$("."+cn+' .songcontainer').html(albumhtml).ready(function(){ 
-								$("."+cn+" .artistcontent").slideToggle("slow");
-								$("."+cn+' .albumcontainer').css("height", ($("." + cn + " .0 li").length * 16));
-								$("."+cn+" .loading, ."+cn+" .loadingbox").fadeOut(200);
-								$("."+cn+" .backgroundbox").fadeIn(500);
-						});
+				//preload artist & album images
+				$(function () {
+					$.preload(images, {
+						loaded_all: function (loaded, total) {
+							$("."+cn).css("height", "auto");
+							$("."+cn+" .artistcontent").html(html);
+							$("."+cn+' .albumname').html(albumtitlehtml);
+							$("."+cn+' .songcontainer').html(albumhtml);
+							$("."+cn+" .artistcontent").slideToggle("slow");
+							$("."+cn+' .albumcontainer').css("height", ($("." + cn + " .0 li").length * 16));
+							$("."+cn+" .loading, ."+cn+" .loadingbox").fadeOut(200);
+							$("."+cn+" .backgroundbox").fadeIn(500);
+							max = $("."+cn+' .songcontainer > div').length;
+						}
 					});
 				});
-				max = $("."+cn+' .songcontainer > div').length;
-				$("#inputkeywords").focusout();
-				$(".resultbox").focus();
 			}
 		);
 	}
@@ -202,8 +249,8 @@ function ShowArtist(artist, cn){
 function NextAlbum(cn){
 	if(current < max){
 		$(".songcontainer .addbutton").hide();
-		$("." + cn + " .songcontainer").animate({left: -(current * (440))}, {duration: 1000, queue:false });
-		$("." + cn + " .albumname").animate({left: -(current * 400)}, {duration: 1000, queue:false});
+		$("." + cn + " .songcontainer").animate({left: -(current * (720))}, {duration: 1000, queue:false });
+		$("." + cn + " .albumname").animate({left: -(current * 670)}, {duration: 1000, queue:false});
 		$("." + cn + ' .albumcontainer').animate({ 'height' : ($("." + cn + " ."+current+" li").length * 16)}, {duration: 1000, queue:false});
 		setTimeout('$(".songcontainer .addbutton").fadeIn(300);', 1000);
 		current++;
@@ -214,8 +261,8 @@ function NextAlbum(cn){
 function PrevAlbum(cn){
 	if(current > min){
 		$(".songcontainer .addbutton").hide();
-		$("." + cn + " .songcontainer").animate({left: -((current-2) * (440))}, {duration: 1000, queue:false});
-		$("." + cn + " .albumname").animate({left: -((current-2) * 400)}, {duration: 1000, queue:false});
+		$("." + cn + " .songcontainer").animate({left: -((current-2) * (720))}, {duration: 1000, queue:false});
+		$("." + cn + " .albumname").animate({left: -((current-2) * 670)}, {duration: 1000, queue:false});
 		$("." + cn + ' .albumcontainer').animate({ 'height' : ($("." + cn + " ."+(current-2)+" li").length * 16)}, {duration: 1000, queue:false});
 		setTimeout('$(".songcontainer .addbutton").fadeIn(300);', 1000);
 		current--;

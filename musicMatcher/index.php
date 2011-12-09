@@ -8,11 +8,11 @@
 </head>
 <body>
 <div class="container">
-	<div class="searchbox bordersbig">
+	<div class="searchbox bordersbig" style='background-image: url("Script/musicmatcher.jpg"); background-repeat:no-repeat;'>
 		<div class="header">
-			<div class="columns-3-1"><!--<span class="orange">Music</span><span class="gray">Matcher</span>--><img style='margin-left:-30px; margin-top:-10px;' src='Script/logo.png'/></div>
+			<div class="columns-3-1" style='width:300px;'>&nbsp;</div>
 			<div class="columns-3-2"><input id="inputkeywords" class="borders" type="text" value="" /></div>
-			<div class="columns-3-3"><input id="searchbutton" class="borders" type="submit" value="Search" /></div>
+			<div class="columns-3-3"><input id="searchbutton" type="submit" value="" /></div>
 		</div>
 	</div>
 	<div class="resultbox"></div>

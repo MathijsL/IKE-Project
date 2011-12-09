@@ -65,7 +65,7 @@
 /* Interaction states
 ----------------------------------*/
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { 
-background-color: orange; font-weight: bold; color: #1c94c4; 
+background-color: #606060; font-weight: bold; color: #1c94c4; 
 
 }
 /*.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #1c94c4; text-decoration: none; }
@@ -458,6 +458,7 @@ button.ui-button-icons-only { width: 3.7em; }
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	outline: none;
+	border: 1px solid #393939;
 }
 .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
 

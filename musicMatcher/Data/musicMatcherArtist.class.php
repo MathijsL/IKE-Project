@@ -23,10 +23,10 @@
 			//Get last fm info
 			if(in_array('name',$this->features) || in_array('picture',$this->features)) {
 				if(in_array('name',$this->features)) {
-					$this->name = $json_info[artist][name];
+					$this->name = str_replace("\\", "", (str_replace("\"", "'", $json_info[artist][name])));
 				}
 				if(in_array('picture',$this->features)) {
-					$this->picture = $json_info[artist][image][2]["#text"];
+					$this->picture = str_replace("\\", "", (str_replace("\"", "'", $json_info[artist][image][2]["#text"])));
 				}
 			}
 			
@@ -34,13 +34,13 @@
 			if(in_array('type',$this->features) || in_array('begindate',$this->features) || in_array('enddate',$this->features)) {
 				$xml_info = simplexml_load_file("http://musicbrainz.org/ws/1/artist/".$this->mbid."?type=xml&inc=");
 				if(in_array('type',$this->features)) {
-					$this->type = ((string)$xml_info->{'artist'}['type']);
+					$this->type = str_replace("\\", "", (str_replace("\"", "'", ((string)$xml_info->{'artist'}['type']))));
 				}
 				if(in_array('begindate',$this->features)) {
-					$this->begindate = ((string)$xml_info->artist->{'life-span'}['begin']);
+					$this->begindate = str_replace("\\", "", (str_replace("\"", "'", ((string)$xml_info->artist->{'life-span'}['begin']))));
 				}
 				if(in_array('enddate',$this->features)) {
-					$this->enddate = ((string)$xml_info->artist->{'life-span'}['end']);
+					$this->enddate = str_replace("\\", "", (str_replace("\"", "'", ((string)$xml_info->artist->{'life-span'}['end']))));
 					
 					if($this->enddate == "")
 						$this->enddate = "Active";
@@ -87,6 +87,7 @@
 		
 		public function toString(){
 			$result = "{\"artist\":{";
+			
 		
 			if(in_array('name',$this->features)) {
 				$result .= "\"name\":\"".$this->name."\",";

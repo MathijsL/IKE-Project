@@ -6,7 +6,8 @@
 
 /** GLOBAL **/
 html, body {
-	background-color: #1f1f1f;
+	/*background-color: #383838;*/
+	background-image: url('../Script/background.jpg');
 	width:100%;
 	height:100%;
 	margin:0;
@@ -39,18 +40,16 @@ h1,h2,h3{
 	padding:20px;
 	background-color:#2f2f2f;
 	text-align:center;
+	border:1px solid #393939;
 }
 .musicbox{
 	z-index:899;
 	bottom: 50%;
-	margin: 0px auto -20px -420px;
+	margin: 0px auto -22px -420px;
 }
 .musicbox{
-	background-image: linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
-	background-image: -o-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
-	background-image: -moz-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
-	background-image: -webkit-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
-	background-image: -ms-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
+	background-image: url('../Script/musicmatcherbottom.jpg');
+	background-repeat:no-repeat;
 }
 .searchbox{
 	z-index:900;
@@ -67,21 +66,21 @@ h1,h2,h3{
 
 /** SEARCHBUTTON **/
 #searchbutton{
-	background: orange;
 	border: none;
-	width: 121px;
-	height: 30px;
-	font-weight:bold;
-	font-size:14pt;
-	color: #fff;
-	margin-top: 8px;
+	width: 114px;
+	height: 31px;
+	background-image: url('../Script/searchbutton.gif');
+	background-repeat:no-repeat;
+	margin-top: 6px;
+	margin-left:-3px;
+	cursor: pointer;
 }
 
 /** SEARCHINPUT **/
 #inputkeywords{
-	height: 30px;
+	height: 29px;
 	border: 0px;
-	width:320px;
+	width:327px;
 	font-weight:bold;
 	color: #000;
 	text-indent: 10px;
@@ -191,7 +190,7 @@ h1,h2,h3{
 	list-style-type: none;
 	border-bottom: 0px solid #606060;
 	height: 15px;
-	width: 330px;
+	width: 610px;
 }
 .albumcontainer .songcontainer ul{
 	padding:0 0 20px 0; 
@@ -204,7 +203,6 @@ h1,h2,h3{
 	cursor:pointer;
 	float:left;
 	position:relative;
-	z-index:200;
 }
 .loading{
 	float:left;
@@ -229,7 +227,7 @@ h1,h2,h3{
 	float:left;
 	margin:0px; 
 	text-align:center;
-	width:400px;
+	width:670px;
 }
 .loadingbox{
 	position:absolute; 
@@ -238,7 +236,7 @@ h1,h2,h3{
 	z-index:998; 
 	width:100%; 
 	height:100%; 
-	background-color:#2f2f2f;
+	background-color:#3c3c3c;
 	display:none;
 	opacity: 0.7;
 }
@@ -249,14 +247,14 @@ h1,h2,h3{
 	width:100%; 
 	height:35px; 
 	z-index:100;
-	background-color:#2c2c2c;
+	background-color:#3c3c3c;
 	display:none;
 }
 .albumcontent{
 	float:left; 
 	margin:0px; 
 	padding:0px; 
-	width:440px;
+	width:720px;
 }
 .artistinfo ul{
 	margin:0 0 0 0;
@@ -278,7 +276,7 @@ h1,h2,h3{
 .albumheader{
 	float:left; 
 	width:100%;
-	background-color:#2c2c2c;
+	background-color:#3c3c3c;
 	margin-left:-10px;
 	margin-bottom:17px;
 	padding:7px 0 0 10px;
@@ -289,7 +287,7 @@ h1,h2,h3{
 	width:20px;
 	height:20px;
 	text-align:center;
-	background-color:#292929;
+	background-color:#393939;
 	vertical-align:middle;
 	cursor:pointer;
 }
@@ -298,7 +296,7 @@ h1,h2,h3{
 	width:45px;
 	height:15px;
 	text-align:center;
-	background-color:#292929;
+	background-color:#393939;
 	cursor:pointer;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -308,7 +306,7 @@ h1,h2,h3{
 	overflow:hidden;
 	white-space:nowrap; 
 	float:left;
-	width:400px;
+	width:680px;
 	z-index:200;
 }
 .albumname{
@@ -318,8 +316,7 @@ h1,h2,h3{
 .albumcontainer{
 	clear:both; 
 	overflow:hidden;
-	margin-right:-28px;
-	width:440px;
+	width:720px;
 }
 .artistinfoli{
 	height:15px;
@@ -376,11 +373,11 @@ h1,h2,h3{
 	z-index:999;
 }
 .lightboxcontent{
-	border:none;
 	display:none;
 	width: 70px;
 	height: 20px;
 	background-color: #404040;
+	border:1px solid #393939;
 	padding: 20px;
 	position:fixed;
 	left: 50%;
@@ -425,7 +422,7 @@ a.close{
 
 /** JQUERY UI **/
 .ui-autocomplete{
-	width: 283px;
+	width: 298px;
 	overflow: hidden;
 	height: auto;
 	max-height:200px;
