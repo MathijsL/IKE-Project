@@ -145,7 +145,6 @@ function GetResults(){
 						$(item).slideToggle("slow", function(){$(item).parent().css("height","");}).fadeOut("slow");
 				});
 			$("#inputkeywords").focusout();
-			$(".resultbox").focus();
 		}
 	);
 }
