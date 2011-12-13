@@ -38,7 +38,7 @@
 					$query = "SELECT name FROM artists WHERE id='".$artistId."'";
 					$result = mysql_query($query) or die(mysql_error());
 					while($row = mysql_fetch_array($result)){
-						$returnArray[$i] = $row['name']."\t".$max;
+						$returnArray[$i] = $row['name']."/".$max;
 					}
 					$searchArray[$key2] = -1;
 				}
