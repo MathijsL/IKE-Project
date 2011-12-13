@@ -7,6 +7,16 @@
 		echo $artist->toString();
 		
 	} else if ($function == "getRelatedArtist" && isset($_GET['keyword'])){
+	
+		/*$ratingTable = new ratingTable();
+		$artists = $ratingTable->getRelatedArtist($_GET['keyword'], 10);
+	
+		$result = "{\"artists\":[";
+		foreach($artists as $artist){
+			$result .= "{\"name\":\"" . $artist . "\"},";
+		}
+		if(count($artists) > 0)
+			$result = substr($result, 0, -1);*/
 		$result = "{\"artists\":[";
 		
 		$json_o=json_decode(file_get_contents('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' . rawurlencode($_GET['keyword']) . '&api_key=b25b959554ed76058ac220b7b2e0a026&format=json'));

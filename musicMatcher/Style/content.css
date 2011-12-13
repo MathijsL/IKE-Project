@@ -172,6 +172,7 @@ h1,h2,h3{
 }
 .songcontainer .album .albumleft{
 	float:left;
+	text-indent: 6px;
 }
 .songcontainer .album .albumright{
 	float:right; 
@@ -325,6 +326,15 @@ h1,h2,h3{
 	height:auto;
 	float:left;
 }
+.artistinfoul li:nth-child(odd)    { background-color:#404040;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+ }
+.artistinfoul li:nth-child(even)    { 
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px; }
 .songcontainer{
 	width:10000px; 
 	position:relative;

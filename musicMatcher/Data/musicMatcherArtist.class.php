@@ -32,7 +32,7 @@
 			
 			//Get musicbrainz info
 			if(in_array('type',$this->features) || in_array('begindate',$this->features) || in_array('enddate',$this->features)) {
-				$xml_info = simplexml_load_file("http://musicbrainz.org/ws/1/artist/".$this->mbid."?type=xml&inc=");
+				$xml_info = simplexml_load_file('http://musicbrainz.org/ws/1/artist/'.$this->mbid.'?type=xml');
 				if(in_array('type',$this->features)) {
 					$this->type = str_replace("\\", "", (str_replace("\"", "'", ((string)$xml_info->{'artist'}['type']))));
 				}
