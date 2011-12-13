@@ -166,8 +166,8 @@ function ChangeLoading(v){
 }
 
 //Changes the music
-function changeMusic(q){
-	$.post("Data/WebserviceGS.php", {query: q}, function(d) {
+function changeMusic(title, artist){
+	$.post("Data/WebserviceGS.php", {artist: artist, title: title}, function(d) {
 		$("#music").html(d);
 	});
 }
@@ -210,7 +210,7 @@ function ShowArtist(artist, cn){
 						
 						$.each(album.tracks, function(p, track){
 							if(track.name != "")
-								albumhtml += "<li class='artistinfoli'><div class='album'><div class='albumleft'>" + track.name + "</div><div class='albumright'><div class='addbutton'><a onclick='changeMusic(\"" + track.name + " " + d.artist.name + "\")'><b>Play</b></a></div></div></div></li>";
+								albumhtml += "<li class='artistinfoli'><div class='album'><div class='albumleft'>" + track.name + "</div><div class='albumright'><div class='addbutton'><a onclick='changeMusic(\"" + (track.name.replace(/'/gi, "")).replace(/"/gi, "") + "\", \"" + (d.artist.name.replace(/'/gi, "")).replace(/"/gi, "") + "\")'><b>Play</b></a></div></div></div></li>";
 						});
 						albumhtml += "</ul></div>"
 					}
