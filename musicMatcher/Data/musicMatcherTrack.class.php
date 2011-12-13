@@ -6,8 +6,8 @@
 		
 		public function __construct($track) {
 			$this->mbid = $track[mbid];
-			$this->name = $track[name];
-			$this->duration = $track[duration]; 
+			$this->name = str_replace("\\", "", str_replace("\"", "'", $track[name]));
+			$this->duration = str_replace("\\", "", (str_replace("\"", "'", $track[duration]))); 
 		}
 		
 		public function getMbid() {

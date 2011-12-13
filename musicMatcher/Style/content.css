@@ -6,7 +6,8 @@
 
 /** GLOBAL **/
 html, body {
-	background-color: #1f1f1f;
+	/*background-color: #383838;*/
+	background-image: url('../Script/background.jpg');
 	width:100%;
 	height:100%;
 	margin:0;
@@ -25,13 +26,13 @@ h1,h2,h3{
 	width: 820px;
 	height: 100%;
 	margin: 0 auto 0 -410px;
-	overflow: hidden;
+	overflow: visible;
 }
 
 /** SEARCHBOX **/
 .searchbox, .musicbox{
 	font-family: bauhaus;
-	position:fixed;
+	position:absolute;
 	font-size:30pt;
 	left: 50%;
 	height: 50px;
@@ -39,18 +40,16 @@ h1,h2,h3{
 	padding:20px;
 	background-color:#2f2f2f;
 	text-align:center;
+	border:1px solid #393939;
 }
 .musicbox{
 	z-index:899;
 	bottom: 50%;
-	margin: 0px auto -20px -420px;
+	margin: 0px auto -22px -420px;
 }
 .musicbox{
-	background-image: linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
-	background-image: -o-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
-	background-image: -moz-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
-	background-image: -webkit-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
-	background-image: -ms-linear-gradient(bottom, rgb(47,47,47) 24%, rgb(66,66,66) 69%);
+	background-image: url('../Script/musicmatcherbottom.jpg');
+	background-repeat:no-repeat;
 }
 .searchbox{
 	z-index:900;
@@ -67,21 +66,21 @@ h1,h2,h3{
 
 /** SEARCHBUTTON **/
 #searchbutton{
-	background: orange;
 	border: none;
-	width: 121px;
-	height: 30px;
-	font-weight:bold;
-	font-size:14pt;
-	color: #fff;
-	margin-top: 8px;
+	width: 114px;
+	height: 31px;
+	background-image: url('../Script/searchbutton.gif');
+	background-repeat:no-repeat;
+	margin-top: 6px;
+	margin-left:-3px;
+	cursor: pointer;
 }
 
 /** SEARCHINPUT **/
 #inputkeywords{
-	height: 30px;
+	height: 29px;
 	border: 0px;
-	width:360px;
+	width:327px;
 	font-weight:bold;
 	color: #000;
 	text-indent: 10px;
@@ -100,7 +99,6 @@ h1,h2,h3{
 .container .columns-3-2{
 	float: left;
 	margin-top: 12px;
-	margin-left: 35px;
 }	
 .container .columns-3-3{
 	float:left;
@@ -192,7 +190,7 @@ h1,h2,h3{
 	list-style-type: none;
 	border-bottom: 0px solid #606060;
 	height: 15px;
-	width: 330px;
+	width: 610px;
 }
 .albumcontainer .songcontainer ul{
 	padding:0 0 20px 0; 
@@ -203,6 +201,22 @@ h1,h2,h3{
 }
 .artistname{
 	cursor:pointer;
+	float:left;
+	position:relative;
+}
+.loading{
+	float:left;
+	height:25px;
+	position:absolute;
+	left:50%;
+	margin-left: -12.5px;
+	display:none;
+	z-index:999;
+}
+.rating{
+	float:right;
+	z-index:200;
+	position:relative;
 }
 .albumimage{
 	width:90px;
@@ -212,13 +226,35 @@ h1,h2,h3{
 .albumtitle{
 	float:left;
 	margin:0px; 
-	padding:0px; 
-	text-align:center
+	text-align:center;
+	width:670px;
+}
+.loadingbox{
+	position:absolute; 
+	left:0px; 
+	top:0px; 
+	z-index:998; 
+	width:100%; 
+	height:100%; 
+	background-color:#3c3c3c;
+	display:none;
+	opacity: 0.7;
+}
+.backgroundbox{
+	position:absolute; 
+	left:0px; 
+	top:0px; 
+	width:100%; 
+	height:35px; 
+	z-index:100;
+	background-color:#3c3c3c;
+	display:none;
 }
 .albumcontent{
 	float:left; 
 	margin:0px; 
 	padding:0px; 
+	width:720px;
 }
 .artistinfo ul{
 	margin:0 0 0 0;
@@ -230,25 +266,37 @@ h1,h2,h3{
 	height: 20px;
 	list-style-type:none;
 }
+#music{
+	margin-top:7px;
+}
+.spacer{
+	height:20px;
+	clear:both;
+}
 .albumheader{
 	float:left; 
-	width:146px;
+	width:100%;
+	background-color:#3c3c3c;
+	margin-left:-10px;
+	margin-bottom:17px;
+	padding:7px 0 0 10px;
+	height:28px;
 }
 .albumbutton{
 	float:left;
 	width:20px;
 	height:20px;
 	text-align:center;
-	background-color:#292929;
+	background-color:#393939;
 	vertical-align:middle;
 	cursor:pointer;
 }
 .addbutton{
 	float:left;
-	width:15px;
+	width:45px;
 	height:15px;
 	text-align:center;
-	background-color:#292929;
+	background-color:#393939;
 	cursor:pointer;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -258,6 +306,8 @@ h1,h2,h3{
 	overflow:hidden;
 	white-space:nowrap; 
 	float:left;
+	width:680px;
+	z-index:200;
 }
 .albumname{
 	width:10000px; 
@@ -266,7 +316,7 @@ h1,h2,h3{
 .albumcontainer{
 	clear:both; 
 	overflow:hidden;
-	margin-right:-28px;
+	width:720px;
 }
 .artistinfoli{
 	height:15px;
@@ -286,6 +336,21 @@ h1,h2,h3{
 	width: 18px;
 	display:none;
 	outline: none;
+}
+.starglow{
+	background: url('../Script/starglow.png');
+	height:20px;
+	width:20px;
+	float:left;
+}
+.stargray{
+	background: url('../Script/stargray.png');
+	height:20px;
+	width:20px;
+	float:left;
+}
+.stargray:hover{
+	background: url('../Script/starglow.png');
 }
 #ruler{
 	visibility: hidden; 
@@ -308,11 +373,11 @@ h1,h2,h3{
 	z-index:999;
 }
 .lightboxcontent{
-	border:none;
 	display:none;
 	width: 70px;
 	height: 20px;
 	background-color: #404040;
+	border:1px solid #393939;
 	padding: 20px;
 	position:fixed;
 	left: 50%;
@@ -336,7 +401,17 @@ a.close{
 	color: #fff;
 	margin-left:2px;
 }
-.borders, .ui-autocomplete, .albumbutton{
+.ui-autocomplete, .albumbutton{
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+.bordersbig{
+	border-radius: 70px;
+	-moz-border-radius: 70px;
+	-webkit-border-radius: 70px;
+}
+.borders, .borderssmall{
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -347,7 +422,7 @@ a.close{
 
 /** JQUERY UI **/
 .ui-autocomplete{
-	width: 343px;
+	width: 298px;
 	overflow: hidden;
 	height: auto;
 	max-height:200px;
@@ -369,7 +444,7 @@ a.close{
 	list-style-type: none;
 	background-color:white;
 	color:black;
-	width:343px;
+	width:283px;
 	margin:0px;
 }
 .ui-autocomplete li a{
