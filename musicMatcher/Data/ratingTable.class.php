@@ -2,13 +2,11 @@
 	class ratingTable{
 		public $table = array();
 		private $artists = array();
+		private $tableLines = array();
 		
 		function __construct() {
-			$tableLines = file("recommender/table.txt");
-			for($i=0; $i < count($tableLines); $i++) {
-				$tableFractions = explode($tableLines[$i],"\t");
-				$this->table[$i] = $tableFractions;
-			}
+			$this->tableLines = file("recommender/table.txt");
+			$this->artists = explode("\t",$this->tableLines[0]);
 		}
 		
 		public function getRelatedArtist($artist,$amount) {
@@ -24,10 +22,10 @@
 				break;
 			}
 			
-			$key = array_search($artistId, $this->table[0]);
-			
+			$key = array_search($artistId, $this->artists);
 			//$key = array_search($artistId, $var);
-			$searchArray = $this->table[$key];
+			$searchArray = explode("\t",$this->tableLines[$key]);
+			$searchArray[0] = -1;
 			$returnArray = array();
 			if(count($searchArray)-1 < $amount) {
 				$amount = count($searchArray)-1;
@@ -35,14 +33,15 @@
 			//$returnArray[0] = count($this->table);
 			
 			for($i = 0; $i < $amount; $i++) {
-				$artistId = max($searchArray);
+				$max = max($searchArray);
+				$key2 = array_search($max,$searchArray);
+				$artistId = $this->artists[$key2];
 				$query = "SELECT name FROM artists WHERE id='".$artistId."'";
 				$result = mysql_query($query) or die(mysql_error());
 				while($row = mysql_fetch_array($result)){
-					$returnArray[$i] = $row['name'];
+					$returnArray[$i] = $row['name']."\t".$max;
 				}
-				$removeKey = array_search($artistId,$searchArray);
-				unset($searchArray[$removeKey]);
+				$searchArray[$key2] = -1;
 			}
 			
 			return $returnArray;
