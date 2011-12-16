@@ -10,18 +10,8 @@
 		}
 		
 		public function getRelatedArtist($artist,$amount) {
-			include("connect.php");
-			$sql = "SELECT id FROM artists WHERE name='".$artist."'";
 			
-			$result = mysql_query($sql) or die(mysql_error());
-			$returnArray = array();
-			
-			while($row = mysql_fetch_array($result)){
-				$artistId = $row['id'];
-				break;
-			}
-			
-			$key = array_search($artistId, $this->artists);
+			$key = array_search($artist, $this->artists);
 			
 			if($key != 0) {
 				$searchArray = explode("\t",$this->tableLines[$key]);
@@ -34,12 +24,8 @@
 				for($i = 0; $i < $amount; $i++) {
 					$max = max($searchArray);
 					$key2 = array_search($max,$searchArray);
-					$artistId = $this->artists[$key2];
-					$query = "SELECT name FROM artists WHERE id='".$artistId."'";
-					$result = mysql_query($query) or die(mysql_error());
-					while($row = mysql_fetch_array($result)){
-						$returnArray[$i] = $row['name']."/".$max;
-					}
+					$artist2 = $this->artists[$key2];
+					$returnArray[$i] = $artist2.";".$max;
 					$searchArray[$key2] = -1;
 				}
 			}
